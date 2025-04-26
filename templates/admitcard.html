@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <title>Admit Card</title>
+  <style>
+    
+    
+
+    .active {
+      color: black;
+    }
+
+    /* Main Content */
+    .main {
+      padding: 30px;
+      background-color: #f4f4f4;
+    }
+
+    .main h2 {
+      color: #000080;
+    }
+
+    .form-box {
+      background: white;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+    }
+
+    .form-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 10px 0;
+    }
+
+    .form-group label {
+      font-weight: bold;
+      width: 100px;
+    }
+
+    select, input[type="radio"] {
+      padding: 5px;
+      font-size: 14px;
+    }
+
+    button {
+        margin-top: 30px;
+            width: 100px;
+            background-color: white;
+            color: #080710;
+            padding: 0 0;
+            font-size: 14px;
+            font-weight: 160;
+            border-radius: 0;
+            cursor: pointer;
+        }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+    }
+
+    .data-table th,
+    .data-table td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      font-size: 14px;
+      padding: 30px 0;
+      color: #444;
+    }
+
+    .footer-line {
+      width: 80%;
+      border: 1px solid #2e1a84;
+      margin: 30px auto 10px auto;
+    }
+  </style>
+
+  <!-- Main Content -->
+  <div class="main">
+    <h2>Admit Card: Program Session And Batch Wise</h2>
+    <div class="form-box">
+      <div class="form-group">
+        <label for="program">Program</label>
+        <select id="program">
+          <option>Bachelor of Science in Computer Science</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="session">Session</label>
+        <select id="session">
+          <option>2024, Fall</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="semester">Semester</label>
+        <select id="semester">
+          <option>54 [ 2022, Fall ]</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Exam</label>
+        <label><input type="radio" name="exam" checked> Mid</label>
+        <label><input type="radio" name="exam"> Final</label>
+      </div>
+
+      <div class="form-group">
+        <label>Roll</label>
+        <span>-</span>
+        <label>Bill</label>
+        <span>-</span>
+        <label>Evaluation</label>
+        <span>-</span>
+      </div>
+
+      <button class="load-button" onclick="loadData()">LOAD</button>
+    </div>
+
+    <!-- Placeholder Table -->
+    <table class="data-table" id="results">
+      <thead>
+        <tr>
+          <th>Sl.NO.</th>
+          <th>COURSE CODE</th>
+          <th>COURSE TITLE</th>
+          <th>CR.HR</th>
+          <th>EXAM. SCHEDULE</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- JavaScript will populate rows here -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    function loadData() {
+      const tbody = document.querySelector("#results tbody");
+      tbody.innerHTML = `
+        {% for register in registers %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ register.code }}</td>
+            <td>{{ register.title }}</td>
+            <td>{{ register.credits }}</td>
+            <td> </td>
+
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="8">No courses found.</td>
+        </tr>
+        {% endfor %}
+      `;
+    }
+  </script>
+  {% endblock %}
+  

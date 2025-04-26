@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<title>Result</title>
+<!-- Main Content -->
+<div class="content">
+    <h2 style="text-align:center; color: #2e1a84;">Term Result</h2>
+    <table class="result-table">
+      <thead>
+        <tr>
+          <th>Course Code</th>
+          <th>Course Title</th>
+          <th>Credit</th>
+          <th>Grade</th>
+          <th>Grade Point</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td>{{ result.course_code }}</td>
+          <td>{{ result.course_title }}</td>
+          <td>{{ result.credit }}</td>
+          <td>{{ result.grade }}</td>
+          <td>{{ result.grade_point }}</td>
+        </tr>
+        
+        <tr>
+          <td colspan="5">No results found.</td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+
+  
+  <script>
+    function handleAdd(courseCode) {
+        alert("Added course: " + courseCode);
+        // You can add AJAX call here to update DB if needed
+    }
+
+    function handleRemove(courseCode) {
+        alert("Removed course: " + courseCode);
+        // You can add AJAX call here to update DB if needed
+    }
+</script>
+
+{% endblock %}

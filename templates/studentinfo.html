@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<title>Student Information</title>
+ <h4>Student Information Management</h4>
+    <h5><p class="message-label">Message:</p></body></h5>
+    <h3>Student Info</h3>
+    <main class="container">
+        
+        <section class="student-info">
+            
+            <div class="info-row">
+                
+                {% for info in infos %}
+                {% if info.pic %}
+                <img src="{{info.pic.url}}" style="height: 150px; width: 150px;"><br><br>
+                {% endif %}
+                {% endfor %}
+
+                {% for info in infos %}
+                <div class="info">
+                    <label>Full Name</label>
+                    <input type="text" value="{{ info.sname }}" readonly><br><br>
+
+                    <label>ID</label>
+                    <input type="text" value={{info.sroll}} readonly><br><br>
+
+                    <label>Father's Name</label>
+                    <input type="text" value="{{ info.fathername }}" readonly><br><br>
+
+                    <label>Mother's Name</label>
+                    <input type="text" value="{{ info.mothername }}" readonly><br><br>
+
+                    <label>Program</label>
+                    <input type="text" value="{{info.program}}" readonly>
+
+                    <label>Session</label>
+                    <input type="text" value="{{info.session}}" readonly><br><br>
+
+                    <label>DOB</label>
+                    <input type="text" value="{{info.dob}}" readonly>
+
+                    <label>Nationality</label>
+                    <input type="text" value="{{info.nationality}}" readonly><br><br>
+
+                    <label>Gender</label>
+                    <input type="text" value="{{info.gender}}" readonly><br><br>
+
+                    <label>Phone</label>
+                    <input type="text" value="{{info.phone}}" readonly>
+
+                    <label>Guargian Phone</label>
+                    <input type="text" value="{{info.guardianphone}}" readonly><br><br>
+
+                    <label>Email</label>
+                    <input type="text" value="{{info.email}}" readonly>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    </main>
+    {% endblock %}

@@ -1,0 +1,15 @@
+<h2>Register Courses for {{ student.id }}</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ formset.management_form }}
+  <table>
+    {% for form in formset %}
+      <tr>
+        {% for field in form.visible_fields %}
+          <td>{{ field.label_tag }} {{ field }}</td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  </table>
+  <button type="submit">Submit</button>
+</form>

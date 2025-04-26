@@ -1,0 +1,15 @@
+<h2 style="text-align:center;">Add New Student</h2>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <h3>Student Basic Info</h3>
+    {{ student_form.as_p }}
+
+    <h3>Student Profile</h3>
+    {{ profile_form.as_p }}
+
+    <h3>Student Additional Info</h3>
+    {{ info_form.as_p }}
+
+    <button type="submit">Save</button>
+</form>
