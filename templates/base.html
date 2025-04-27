@@ -213,13 +213,19 @@
   <nav class="nav-bar">
     <ul class="center-nav">
         <li><a href="{% url 'home' %}" class="active">Home</a></li>
-        <li><a href="{% url 'admitcard' %}">Admit Card</a></li>
-        <li><a href="evolution">Evaluation Form</a></li>
+        <li>
+          {% for info in infos %}
+              <a href="{% url 'admitcard_page' info.sroll.pk %}">Admit Card</a>
+          {% endfor %}
+      </li>
+      
+      
 
       
-        <li>{% for info in infos %}
-          <a href="{% url 'register_courses' info.sid %}">Register Courses</a>
-        {% endfor %}
+        <li>
+          {% for info in infos %}
+            <a href="{% url 'register_courses' info.sroll.pk %}">Registration</a>
+          {% endfor %}
         </li>
 
       

@@ -36,18 +36,38 @@ class StudentInfo(models.Model):
 
 class CourseRegister(models.Model):
     studentid = models.ForeignKey(Student, on_delete=models.CASCADE)
-    code = models.CharField(max_length=10)
-    title = models.CharField(max_length=100)
-    credits = models.DecimalField(max_digits=4, decimal_places=2)
-    semester = models.CharField(max_length=10)
-    type = models.CharField(max_length=10)
+    code = models.CharField(max_length=10, null=True, blank=True)
+    title = models.CharField(max_length=100, null=True, blank=True)
+    credits = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
+    semester = models.CharField(max_length=10, null=True, blank=True)
+    type = models.CharField(max_length=10, null=True, blank=True)
     section = models.CharField(
         max_length=20,
         choices=[('Remove', 'Remove'), ('Add', 'Add')]
     )
-    section_name_time = models.CharField(max_length=10, blank=True, null=True)
+    section_name_time = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return f"{self.code} - {self.title}"
+    
+
+class AdmitCard(models.Model):
+    sid = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='admitcard_student')
+    prog = models.ForeignKey(StudentInfo, on_delete=models.CASCADE, related_name='admitcard_program')
+    sess = models.ForeignKey(StudentInfo, on_delete=models.CASCADE, related_name='admitcard_session')
+    seme = models.ForeignKey(CourseRegister, on_delete=models.CASCADE, related_name='admitcard_semester')
+    cou_code = models.ForeignKey(CourseRegister, on_delete=models.CASCADE, related_name='admitcard_course_code')
+    tit = models.ForeignKey(CourseRegister, on_delete=models.CASCADE, related_name='admitcard_title')
+    cre = models.ForeignKey(CourseRegister, on_delete=models.CASCADE, related_name='admitcard_credits')
+    schedule = models.CharField(max_length=100, null=True, blank=True)
+    exam = models.CharField(
+        max_length=20,
+        choices=[('Mid', 'Mid'), ('Final', 'Final')]
+    )
+    bill = models.CharField(
+        max_length=20,
+        choices=[('Paid', 'Paid'), ('Prepaid', 'Prepaid'), ('Unpaid', 'Unpaid'), ('Halfpaid', 'Halfpaid')]
+    )
+
     
 

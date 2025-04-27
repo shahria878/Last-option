@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render, get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.http import HttpResponse
 from .forms import CourseRegisterFormSet
@@ -76,6 +77,20 @@ def StudentinfoPage(request, id):
     return render(request, 'studentinfo.html', context)
 
 
+def course_register_page(request, id):
+    student = get_object_or_404(Student, pk=id)
+    infos = StudentInfo.objects.filter(pk=id)
+    registers = CourseRegister.objects.filter(studentid=student)
+
+    context = {
+        'student': student,
+        'infos': infos,
+        'registers': registers
+    }
+
+    return render(request, 'course_register.html', context)
+
+
 def AllusersPage(request):
     students = Student.objects.all()
     infos = StudentInfo.objects.all()
@@ -88,13 +103,20 @@ def LogoutPage(request):
     logout(request)
     return redirect('login')
 
-def AdmitcardPage(request):
-    students = Student.objects.all()
-    registers = CourseRegister.objects.all()
-    context = {'registers': registers, 
-               'students': students}
-    return render (request,'admitcard.html',context=context)
+def admitcard_page(request, id):
+    student = get_object_or_404(Student, pk=id)
+    infos = StudentInfo.objects.filter(sroll=student)
+    admitcards = AdmitCard.objects.filter(sid=student)
+    registers = CourseRegister.objects.filter(studentid=student)
 
+    context = {
+        'student': student,
+        'infos': infos,
+        'admitcards': admitcards,
+        'registers': registers
+    }
+
+    return render(request, 'admitcard_page.html', context)
 
 def CourseregisterPage(request):
     registers = CourseRegister.objects.all()
@@ -109,13 +131,27 @@ def ResultPage(request):
     context = {'students': students}
     return render (request,'result.html',context=context)
 
+@csrf_exempt
 def create_student(request):
     if request.method == 'POST':
         student_form = StudentForm(request.POST)
         profile_form = StudentProfileForm(request.POST)
         info_form = StudentInfoForm(request.POST, request.FILES)
 
-        if student_form.is_valid() and profile_form.is_valid() and info_form.is_valid():
+        CourseRegisterFormSetCreate = modelformset_factory(
+            CourseRegister,
+            form=CourseRegisterForm,
+            extra=2,  # always 2 forms for new student
+            can_delete=False
+        )
+        course_formset = CourseRegisterFormSetCreate(request.POST, queryset=CourseRegister.objects.none())
+
+        admitcard_form = AdmitCardForm(request.POST)
+
+        if (student_form.is_valid() and profile_form.is_valid() and 
+            info_form.is_valid() and course_formset.is_valid() and 
+            admitcard_form.is_valid()):
+            
             student = student_form.save()
 
             profile = profile_form.save(commit=False)
@@ -126,19 +162,40 @@ def create_student(request):
             info.sroll = student
             info.save()
 
-            return redirect('alluser')  # Redirect to a success page or student list
+            courses = course_formset.save(commit=False)
+            for course in courses:
+                course.studentid = student
+                course.save()
 
+            admitcard = admitcard_form.save(commit=False)
+            admitcard.sid = student  # admitcard er student set kore dilam
+            admitcard.save()
+
+            return redirect('alluser')
+    
     else:
         student_form = StudentForm()
         profile_form = StudentProfileForm()
         info_form = StudentInfoForm()
 
+        CourseRegisterFormSetCreate = modelformset_factory(
+            CourseRegister,
+            form=CourseRegisterForm,
+            extra=2,
+            can_delete=False
+        )
+        course_formset = CourseRegisterFormSetCreate(queryset=CourseRegister.objects.none())
+
+        admitcard_form = AdmitCardForm()
+
     context = {
         'student_form': student_form,
         'profile_form': profile_form,
-        'info_form': info_form
+        'info_form': info_form,
+        'course_formset': course_formset,
+        'admitcard_form': admitcard_form,  # Add this to context
+        'update': False,
     }
-
     return render(request, 'student_form.html', context)
 
 def update_student(request, student_id):
@@ -146,13 +203,25 @@ def update_student(request, student_id):
     profile = get_object_or_404(StudentProfile, roll=student)
     info = get_object_or_404(StudentInfo, sroll=student)
 
+    course_registers = CourseRegister.objects.filter(studentid=student)
+    CourseRegisterFormSetUpdate = modelformset_factory(CourseRegister, form=CourseRegisterForm, extra=0, can_delete=True)
+
+    # Existing admit card (one-to-one relation mone kore nisi, na hole .filter())
+    admitcard = AdmitCard.objects.filter(sid=student).first()
+    
     if request.method == 'POST':
         student_form = StudentForm(request.POST, instance=student)
         profile_form = StudentProfileForm(request.POST, instance=profile)
         info_form = StudentInfoForm(request.POST, request.FILES, instance=info)
+        course_formset = CourseRegisterFormSetUpdate(request.POST, queryset=course_registers)
 
-        if student_form.is_valid() and profile_form.is_valid() and info_form.is_valid():
-            student_form.save()
+        admitcard_form = AdmitCardForm(request.POST, instance=admitcard)
+
+        if (student_form.is_valid() and profile_form.is_valid() and 
+            info_form.is_valid() and course_formset.is_valid() and 
+            admitcard_form.is_valid()):
+            
+            student = student_form.save()
 
             profile = profile_form.save(commit=False)
             profile.roll = student
@@ -162,53 +231,53 @@ def update_student(request, student_id):
             info.sroll = student
             info.save()
 
-            return redirect('alluser')  # Or redirect to a detail page
+            courses = course_formset.save(commit=False)
+            for course in courses:
+                course.studentid = student
+                course.save()
+
+            # Deleted course gulo delete korte hobe
+            for course in course_formset.deleted_objects:
+                course.delete()
+
+            admitcard = admitcard_form.save(commit=False)
+            admitcard.sid = student
+            admitcard.save()
+
+            return redirect('alluser')
 
     else:
         student_form = StudentForm(instance=student)
         profile_form = StudentProfileForm(instance=profile)
         info_form = StudentInfoForm(instance=info)
+        course_formset = CourseRegisterFormSetUpdate(queryset=course_registers)
+        admitcard_form = AdmitCardForm(instance=admitcard)
 
     context = {
         'student_form': student_form,
         'profile_form': profile_form,
         'info_form': info_form,
+        'course_formset': course_formset,
+        'admitcard_form': admitcard_form,  # Added here
         'update': True,
         'student_id': student.id,
     }
-
     return render(request, 'student_form.html', context)
+
 
 def delete_student_confirm(request, student_id):
     student = get_object_or_404(Student, id=student_id)
 
     if request.method == 'POST':
+        # Delete related objects manually
+        StudentProfile.objects.filter(roll=student).delete()
+        StudentInfo.objects.filter(sroll=student).delete()
+        CourseRegister.objects.filter(studentid=student).delete()
+        AdmitCard.objects.filter(student=student).delete()
+
+        # Then delete the student itself
         student.delete()
-        return redirect('alluser')  # Replace with your actual list view name
+
+        return redirect('alluser')  # your all students list page
 
     return render(request, 'delete_confirm.html', {'student': student})
-
-
-
-def register_courses(request, id):
-    students = get_object_or_404(Student, pk = id)
-
-    if request.method == 'POST':
-        formset = CourseRegisterFormSet(request.POST, queryset=CourseRegister.objects.none())
-        if formset.is_valid():
-            instances = formset.save(commit=False)
-            for instance in instances:
-                instance.studentid = students  # Assign the same student
-                instance.save()
-            return redirect('studentinfo')  # Change this to your success URL
-    else:
-        formset = CourseRegisterFormSet(queryset=CourseRegister.objects.none())
-
-    return render(request, 'register_courses.html', {'formset': formset, 'students': students})
-
-
-
-
-
-
-    

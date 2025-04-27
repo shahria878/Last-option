@@ -24,7 +24,6 @@ from app1 import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('studentinfo/<str:id>/', views.StudentinfoPage, name='studentinfo'),
-    path('register-courses/<str:student_id>/', views.register_courses, name='register_courses'),
     path('',views.SignupPage,name='signup'),
     path('login/',views.LoginPage,name='login'),
     path('home/',views.HomePage,name='home'),
@@ -32,10 +31,12 @@ urlpatterns = [
     path('logout/',views.LogoutPage,name='logout'),
     path('changepass/',views.ChangepassPage,name='changepass'),
     path('result/',views.ResultPage, name='result'),
-    path('admitcard/',views.AdmitcardPage, name='admitcard'),
+    path('admitcard/<int:id>/', views.admitcard_page, name='admitcard_page'),
     path('add-student/', views.create_student, name='add_student'),
     path('update-student/<str:student_id>/', views.update_student, name='update_student'),
     path('delete-student/<str:student_id>/', views.delete_student_confirm, name='delete_student'),
+    path('register-courses/<int:id>/', views.course_register_page, name='register_courses'),
+
 
 
     

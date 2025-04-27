@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <title>Registration</title>
+
+<style>
+  h2 {
+    color: red;
+    font-size: 24px; /* increased */
+  }
+
+  .note {
+    color: red;
+    font-weight: bold;
+    font-size: 16px; /* increased */
+  }
+
+  input[type="text"] {
+    width: 320px;
+    padding: 8px;
+    margin-right: 8px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px; /* increased */
+  }
+
+  button, .btn {
+    padding: 6px 10px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    font-size: 14px; /* increased */
+  }
+
+  button:hover, .btn:hover {
+    background-color: #eee;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+  }
+
+  table, th, td {
+    border: 1px solid #ccc;
+  }
+
+  th, td {
+    padding: 8px;
+    text-align: center;
+    font-size: 14px; /* increased */
+  }
+
+  .btn-add, .btn-remove {
+    display: inline-block;
+    width: 60px;
+    padding: 4px 8px;
+    font-size: 13px; /* increased */
+    margin: 2px;
+  }
+
+  .footer {
+    text-align: center;
+    font-size: 13px; /* increased */
+    margin-top: 30px;
+    color: #666;
+  }
+
+  .message {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-top: 20px;
+    font-size: 14px; /* increased */
+  }
+
+  .student-info {
+    background-color: #f5f5ff;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 20px;
+    font-size: 14px; /* increased */
+  }
+
+  .student-info p {
+    margin: 5px 0;
+  }
+
+  .btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+  }
+
+  .load-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 13px; /* increased */
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .load-button:hover {
+    background-color: #0056b3;
+  }
+</style>
+
+
+
+
+<div class="container">
+  <h2>New Course Registration</h2>
+  <p class="note">Note: Choose courses carefully considering the tentative exam routine.</p>
+
+  <div>
+    <label for="regNo">Registration No:</label>
+    <input type="text" id="regNo" value="{{ student.id }}" readonly />
+  </div>
+
+  
+
+<!-- Video link add -->
+<div style="margin-top: 10px;">
+  <a href="https://www.youtube.com/shorts/NU44H49f7I8" target="_blank" style="color: blue; text-decoration: underline; font-size: 16px;">
+    <p style="color: green; margin-top: 8px;">Registration Tutorial</p>
+  </a>
+</div>
+
+
+  <div class="student-info">
+    <p><strong>Pre-Advising Cr. Limit:</strong> 24</p> 
+    <p><strong>Taken Credit:</strong> <span id="takenCredit">0</span></p>
+    <p><strong>Registration Fee:</strong> <span style="color: red;">0.00</span></p>
+  </div>
+
+  <div class="message">Message:</div>
+
+  <h3 style="margin-top: 20px;">Select Your Sections</h3>
+
+  <table>
+    <thead>
+      <tr>
+          <th>SL</th>
+          <th>Code</th>
+          <th>Title</th>
+          <th>Credits</th>
+          <th>Semester</th>
+          <th>Type</th>
+          <th>Action</th>
+          <th>Section Name & Time</th> <!-- ekhanei change hobe -->
+      </tr>
+    </thead>
+    <tbody>
+      {% for register in registers %}
+      <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ register.code }}</td>
+          <td>{{ register.title }}</td>
+          <td>{{ register.credits }}</td>
+          <td>{{ register.semester }}</td>
+          <td>{{ register.type }}</td>
+          <td>
+            <button class="load-button" onclick="showTime(this, '{{ register.section_name_time }}')">Add</button>
+            <button class="load-button" onclick="showNope(this)">Remove</button>
+          </td>
+          <td class="result-cell"></td> <!-- Important: ei class diyei detect korbo -->
+      </tr>
+      {% empty %}
+      <tr>
+          <td colspan="8">No courses found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  
+  
+
+  <script>
+    let totalCredit = 0;
+    let registrationFee = 0;
+  
+    function showTime(button, sectionTime) {
+      const row = button.closest('tr');
+      const targetCell = row.querySelector('.result-cell');
+  
+      if (!row.dataset.added) {
+        totalCredit += 3; // 3 credit add hobe
+        registrationFee += 9000; // 3000 fee add hobe
+  
+        document.getElementById('takenCredit').innerText = totalCredit;
+        updateRegistrationFee();
+  
+        targetCell.innerHTML = sectionTime;
+  
+        row.dataset.added = "true";
+      } else {
+        targetCell.innerHTML = targetCell.innerHTML;
+      }
+    }
+  
+    function showNope(button) {
+      const row = button.closest('tr');
+      const targetCell = row.querySelector('.result-cell');
+  
+      if (row.dataset.added === "true" && !row.dataset.removed) {
+        totalCredit -= 3;
+        if (totalCredit < 0) {
+          totalCredit = 0;
+        }
+  
+        registrationFee -= 9000;
+        if (registrationFee < 0) {
+          registrationFee = 0;
+        }
+  
+        document.getElementById('takenCredit').innerText = totalCredit;
+        updateRegistrationFee();
+  
+        row.dataset.removed = "true";
+      }
+  
+      targetCell.innerHTML = `<span style="color: red;">NOPE</span>`;
+    }
+  
+    function updateRegistrationFee() {
+      const feeElement = document.querySelector('.student-info span[style="color: red;"]');
+      feeElement.innerText = registrationFee.toFixed(2);
+    }
+  </script>
+  
+
+
+{% endblock %}
