@@ -1,0 +1,11 @@
+<h2 style="text-align: center;">Create Admit Card</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <div style="background-color: #f2f2f2; padding: 20px; border-radius: 8px;">
+        {{ admitcard_form.as_p }}
+    </div>
+    <div style="text-align: center; margin-top: 20px;">
+        <button type="submit" style="padding: 10px 20px; font-size: 16px;">Save Admit Card</button>
+    </div>
+</form>

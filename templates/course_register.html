@@ -4,18 +4,22 @@
   <title>Registration</title>
 
 <style>
+
   h2 {
+    padding: 0px 20px;
     color: red;
     font-size: 24px; /* increased */
   }
 
   .note {
+    padding: 0px 20px;
     color: red;
     font-weight: bold;
     font-size: 16px; /* increased */
   }
 
   input[type="text"] {
+    padding: 0px 20px;
     width: 320px;
     padding: 8px;
     margin-right: 8px;
@@ -39,6 +43,7 @@
   }
 
   table {
+    padding: 0px 20px;
     width: 100%;
     border-collapse: collapse;
     margin-top: 25px;
@@ -79,7 +84,7 @@
 
   .student-info {
     background-color: #f5f5ff;
-    padding: 12px;
+    padding: 12px 20px;
     border-radius: 8px;
     margin-top: 20px;
     font-size: 14px; /* increased */
@@ -109,16 +114,17 @@
   .load-button:hover {
     background-color: #0056b3;
   }
+  
 </style>
 
 
 
 
-<div class="container">
+<div class="content">
   <h2>New Course Registration</h2>
   <p class="note">Note: Choose courses carefully considering the tentative exam routine.</p>
 
-  <div>
+  <div style="margin-top: 10px; padding: 0px 20px;">
     <label for="regNo">Registration No:</label>
     <input type="text" id="regNo" value="{{ student.id }}" readonly />
   </div>
@@ -126,7 +132,7 @@
   
 
 <!-- Video link add -->
-<div style="margin-top: 10px;">
+<div style="margin-top: 10px; padding: 0px 20px;">
   <a href="https://www.youtube.com/shorts/NU44H49f7I8" target="_blank" style="color: blue; text-decoration: underline; font-size: 16px;">
     <p style="color: green; margin-top: 8px;">Registration Tutorial</p>
   </a>

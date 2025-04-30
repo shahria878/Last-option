@@ -30,12 +30,21 @@ urlpatterns = [
     path('alluser/',views.AllusersPage,name='alluser'),
     path('logout/',views.LogoutPage,name='logout'),
     path('changepass/',views.ChangepassPage,name='changepass'),
+    path('result/<int:id>/', views.ResultPage, name='result'),
+    path('result/<str:id>/', views.ResultPage, name='result'),
     path('result/',views.ResultPage, name='result'),
     path('admitcard/<int:id>/', views.admitcard_page, name='admitcard_page'),
     path('add-student/', views.create_student, name='add_student'),
-    path('update-student/<str:student_id>/', views.update_student, name='update_student'),
     path('delete-student/<str:student_id>/', views.delete_student_confirm, name='delete_student'),
     path('register-courses/<int:id>/', views.course_register_page, name='register_courses'),
+    path('admitform/', views.create_admitcard, name='admitform'),
+    path('update-student/<int:student_id>/', views.update_student, name='update_student'),
+    path('update-admitcard/<int:sid>/', views.update_admitcard, name='admitform'),
+    path('resultform/', views.create_result, name='resultform'),
+    path('update-result/<int:student_id>/', views.update_result, name='resultform'),
+    path('payment/<int:id>/', views.PaymentPage, name='payment_page'),
+
+
 
 
 

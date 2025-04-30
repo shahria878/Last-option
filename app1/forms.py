@@ -1,5 +1,5 @@
 from django import forms
-from .models import Student, StudentProfile, StudentInfo, CourseRegister, AdmitCard
+from .models import *
 from django.forms import modelformset_factory
 
 class StudentForm(forms.ModelForm):
@@ -43,15 +43,26 @@ class AdmitCardForm(forms.ModelForm):
         model = AdmitCard
         fields = [
             'sid',
-            'prog',
-            'sess',
-            'seme',
-            'cou_code',
-            'tit',
-            'cre',
             'schedule',
             'exam',
             'bill',
         ]
 
+class ResultForm(forms.ModelForm):
+    class Meta:
+        model = Result
+        fields = [
+            'mainid',
+            's_code',
+            's_title',
+            'grade',
+            'grade_point',
+            'cur_status',
+        ]
+
+ResultFormset = modelformset_factory(
+        Result,
+        form=ResultForm,
+        extra=2  # Change as needed
+)
 

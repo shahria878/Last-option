@@ -93,23 +93,22 @@
       <div class="form-group">
         <label for="program">Program</label>
         <select id="program">
-          <option>Bachelor of Science in Computer Science</option>
+          {% for info in infos %}
+          <option>{{info.program}}</option>
+          {% endfor %}
         </select>
       </div>
 
       <div class="form-group">
         <label for="session">Session</label>
         <select id="session">
-          <option>2024, Fall</option>
+          {% for info in infos %}
+          <option>{{info.session}}</option>
+          {% endfor %}
         </select>
       </div>
 
-      <div class="form-group">
-        <label for="semester">Semester</label>
-        <select id="semester">
-          <option>54 [ 2022, Fall ]</option>
-        </select>
-      </div>
+      
 
       <div class="form-group">
         <label>Exam</label>
@@ -119,13 +118,20 @@
 
       <div class="form-group">
         <label>Roll</label>
-        <span>-</span>
-        <label>Bill</label>
-        <span>-</span>
-        <label>Evaluation</label>
-        <span>-</span>
+        {% for info in infos %}
+        {{info.sroll}}
+          {% endfor %}
       </div>
+      <div class="form-group">
+        <label>Bill</label>
+        {% if admitcards %}
+            {{ admitcards.0.bill }}
+        {% endif %}
+    </div>
 
+    <input type="hidden" id="billStatus" value="{{ admitcards.0.bill }}">
+
+    
       <button class="load-button" onclick="loadData()">LOAD</button>
     </div>
 
@@ -146,27 +152,34 @@
     </table>
   </div>
 
-  <!-- JavaScript -->
-  <script>
-    function loadData() {
-      const tbody = document.querySelector("#results tbody");
-      tbody.innerHTML = `
-        {% for register in registers %}
-        <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ register.code }}</td>
-            <td>{{ register.title }}</td>
-            <td>{{ register.credits }}</td>
-            <td> </td>
+  
+<script>
+  function loadData() {
+    const billStatus = document.getElementById("billStatus").value;
 
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="8">No courses found.</td>
-        </tr>
-        {% endfor %}
-      `;
+    if (billStatus === "Unpaid") {
+      alert("You cannot load data because your bill is unpaid.");
+      return; // Stop the function
     }
-  </script>
+
+    const tbody = document.querySelector("#results tbody");
+    tbody.innerHTML = `
+      {% for register in registers %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ register.code }}</td>
+        <td>{{ register.title }}</td>
+        <td>{{ register.credits }}</td>
+        <td></td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="8">No courses found.</td>
+      </tr>
+      {% endfor %}
+    `;
+  }
+</script>
+
   {% endblock %}
   

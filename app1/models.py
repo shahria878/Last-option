@@ -53,12 +53,6 @@ class CourseRegister(models.Model):
 
 class AdmitCard(models.Model):
     sid = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='admitcard_student')
-    prog = models.ForeignKey(StudentInfo, on_delete=models.CASCADE, related_name='admitcard_program')
-    sess = models.ForeignKey(StudentInfo, on_delete=models.CASCADE, related_name='admitcard_session')
-    seme = models.ForeignKey(CourseRegister, on_delete=models.CASCADE, related_name='admitcard_semester')
-    cou_code = models.ForeignKey(CourseRegister, on_delete=models.CASCADE, related_name='admitcard_course_code')
-    tit = models.ForeignKey(CourseRegister, on_delete=models.CASCADE, related_name='admitcard_title')
-    cre = models.ForeignKey(CourseRegister, on_delete=models.CASCADE, related_name='admitcard_credits')
     schedule = models.CharField(max_length=100, null=True, blank=True)
     exam = models.CharField(
         max_length=20,
@@ -68,6 +62,15 @@ class AdmitCard(models.Model):
         max_length=20,
         choices=[('Paid', 'Paid'), ('Prepaid', 'Prepaid'), ('Unpaid', 'Unpaid'), ('Halfpaid', 'Halfpaid')]
     )
+
+
+class Result(models.Model):
+    mainid = models.ForeignKey(Student, on_delete=models.CASCADE)
+    s_code = models.ForeignKey(CourseRegister, on_delete=models.CASCADE, related_name='results_by_code')
+    s_title = models.ForeignKey(CourseRegister, on_delete=models.CASCADE, related_name='results_by_title')
+    grade = models.CharField(max_length=10, null=True, blank=True)
+    grade_point = models.CharField(max_length=10, null=True, blank=True)
+    cur_status = models.CharField(max_length=10, null=True, blank=True)
 
     
 

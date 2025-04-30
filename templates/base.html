@@ -8,6 +8,8 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" type="text/css" href="{% static 'app1/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 
   <link rel="icon" type="image/png" href="{% static 'cap.jpeg' %}">
   <style>
@@ -141,8 +143,8 @@
       background-color: #717171;
     }
 
-    /* About and Contact Section */
-    section {
+     /* About and Contact Section */
+     section {
       padding: 67px 20px;
       text-align: center;
       background-color: #f9f9f9;
@@ -161,8 +163,11 @@
       color: #333;
     }
 
-    /* Footer */
-    footer {
+    
+
+   /* Footer */
+   footer {
+    width: 100%;
       text-align: center;
       font-size: 14px;
       color: #444;
@@ -174,6 +179,7 @@
       border: 1px solid #2e1a84;
       margin: 30px auto 10px auto;
     }
+
   </style>
 </head>
 <body>
@@ -232,8 +238,12 @@
         
 
         </li>
-        <li><a href="{% url 'result' %}">Result</a></li>
-        <li><a href="#">Student Bill & Payment History</a></li>
+        {% for info in infos %}
+        <li><a href="{% url 'result' info.sroll.pk %}">Result</a></li>
+        {% endfor %}
+        {% for info in infos %}
+        <li><a href="">Student Bill & Payment History</a></li>
+        {% endfor %}
       
     </ul>
   </nav>
@@ -241,6 +251,10 @@
 {% block content %}
     
 {% endblock content %}
+
+
+
+
 
 <!-- About Section -->
 <section id="about-section">
@@ -271,18 +285,15 @@
 
 </section>
 
-
-
+<!-- Footer Section -->
 <footer>
-    <hr class="footer-line" />
-    <p>Developed by Shahria Amin</p>
-    <p>© Copyright 2025 | <ion-icon name="school-sharp"></ion-icon> UniCam | All rights reserved.</p>
-  </footer>
+  <hr class="footer-line" />
+  <p>Developed by Shahria Amin</p>
+  <p>© Copyright 2025 | UniCam | All rights reserved.</p>
+</footer>
 
-  <script>
-    // You can add interactivity here later (e.g., dropdown functionality)
-    console.log("Page Loaded");
-  </script>
+
+  
 
 </body>
 </html>

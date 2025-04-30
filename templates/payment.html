@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+
+{% block content %}
+<title>Student Bill & Payment History</title>
+<style>
+body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f8f9fa;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .row div {
+      margin: 5px 0;
+    }
+    .highlight {
+      color: red;
+      font-weight: bold;
+    }
+    .note {
+      color: blue;
+      font-weight: bold;
+    }
+    .amount-box {
+      background-color: #d4edda;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .amount {
+      font-size: 20px;
+      color: green;
+      font-weight: bold;
+    }
+    .due {
+      color: red;
+      font-weight: bold;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    table, th, td {
+      border: 1px solid #dee2e6;
+    }
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #ffeeba;
+    }
+    input[type="number"] {
+      width: 150px;
+      padding: 5px;
+      margin-right: 10px;
+    }
+    button {
+      background-color: #17a2b8;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #138496;
+    }
+</style>
+<div class="card">
+    <div class="row">
+      <div><strong>Registration No:</strong> 22201212</div>
+      <div><strong>Semester:</strong>
+        <select>
+          <option>-Select-</option>
+        </select>
+      </div>
+      <div><strong>Bill Process Instruction</strong></div>
+    </div>
+    <div class="row">
+      <div><strong>Program:</strong> Bachelor of Science in Computer Science and Engineering</div>
+      <div><strong>User:</strong> 22201212</div>
+    </div>
+    <div class="row">
+      <div><strong>Student Name:</strong> Shahria Amin</div>
+      <div><strong>Batch:</strong> 54</div>
+      <div><strong>Date:</strong> 30/04/2025</div>
+      <div><strong>Entry level waiver:</strong> 50.00%</div>
+    </div>
+  </div>
+  
+  <div class="card">
+    <p class="highlight">NB: Due (Previous Semester) 0.00 Taka + Min. Fee (Current Semester): 40000.00 Taka = Total Fee : 40000.00 Taka, student should deposit this amount to confirm their registration</p>
+    <p class="highlight">NB: Student will have to pay additional charge for online payment.</p>
+    <p class="note">NB: Student who are taking 6 credit or less should deposit credit wise fee before confirming registration</p>
+  </div>
+  
+  <div class="row">
+    <div class="card" style="flex: 1; margin-right: 20px;">
+      <div><strong>Total Bill (This Semester):</strong> <span class="amount">85500.00</span></div>
+      <div><strong>Total Paid (This Semester):</strong> <span class="amount">67500.00</span></div>
+      <div><strong>Balance:</strong> <span class="due">18000.00</span></div>
+    </div>
+  
+    <div class="card" style="flex: 1;">
+      <h3>Online Payment</h3>
+      <div style="margin-bottom: 10px;">I want to pay ৳:
+        <input type="number" id="payAmount" placeholder="Enter amount">
+      </div>
+      <button onclick="payOnline()">Pay Online</button>
+      <button onclick="payBkash()">Payment with Bkash</button>
+      <p><a href="#">Online Payment Help Link</a></p>
+    </div>
+  </div>
+  
+  <div class="card">
+    <h3>Installment Fall - 2024</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Due Date</th>
+          <th>FeeType</th>
+          <th>Installment</th>
+          <th>Payment</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>23-Jan-2025</td>
+          <td>1st Installment Registration</td>
+          <td>40000</td>
+          <td>40000</td>
+          <td>Paid</td>
+        </tr>
+        <tr>
+          <td>9-Mar-2025</td>
+          <td>2nd Installment 30% of Tuition Fees</td>
+          <td>13500</td>
+          <td>13500</td>
+          <td>Paid</td>
+        </tr>
+        <tr>
+          <td>9-Mar-2025</td>
+          <td>2nd Installment Late Fine</td>
+          <td>500</td>
+          <td>500</td>
+          <td>Paid</td>
+        </tr>
+        <tr>
+          <td>13-Apr-2025</td>
+          <td>3rd Installment (Mid term)</td>
+          <td>13500</td>
+          <td>13500</td>
+          <td>Paid</td>
+        </tr>
+        <tr>
+          <td>8-May-2025</td>
+          <td>4th Installment (Final)</td>
+          <td>18000</td>
+          <td>0</td>
+          <td>UnPaid</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <script>
+    function payOnline() {
+      const amount = document.getElementById('payAmount').value;
+      if (amount > 0) {
+        alert('Redirecting to online payment for ৳' + amount);
+      } else {
+        alert('Please enter a valid amount.');
+      }
+    }
+  
+    function payBkash() {
+      const amount = document.getElementById('payAmount').value;
+      if (amount > 0) {
+        alert('Redirecting to Bkash for ৳' + amount);
+      } else {
+        alert('Please enter a valid amount.');
+      }
+    }
+  </script>
+
+
+
+{% endblock %}

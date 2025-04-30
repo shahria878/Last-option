@@ -4,32 +4,28 @@
     {% csrf_token %}
 
     <div style="background-color: #f2f2f2; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-        <h3>Student Basic Info</h3>
+        <h3 style="text-align: center;">Student Basic Info</h3>
         {{ student_form.as_p }}
     </div>
 
     <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-        <h3>Student Profile</h3>
+        <h3 style="text-align: center;">Student Profile</h3>
         {{ profile_form.as_p }}
     </div>
 
     <div style="background-color: #f2f2f2; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-        <h3>Student Additional Info</h3>
+        <h3 style="text-align: center;">Student Additional Info</h3>
         {{ info_form.as_p }}
     </div>
 
     <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-        <h3>Course Registration</h3>
+        <h3 style="text-align: center;">Course Registration</h3>
         {{ course_formset.management_form }}
         {% for form in course_formset %}
             {{ form.as_p }}
         {% endfor %}
     </div>
 
-    <div style="background-color: #f2f2f2; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-        <h3>Admit Card Info</h3>
-        {{ admitcard_form.as_p }}
-    </div>
 
     <div style="text-align: center; margin-top: 20px;">
         <button type="submit" style="padding: 10px 20px; font-size: 16px;">Save</button>

@@ -1,0 +1,11 @@
+<h2 style="text-align: center;">Create Result</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ result_formset.management_form }}
+    {% for form in result_formset %}
+        <div class="form-row">
+            {{ form.as_p }}
+        </div>
+    {% endfor %}
+    <button type="submit">Submit</button>
+</form>
