@@ -66,3 +66,15 @@ ResultFormset = modelformset_factory(
         extra=2  # Change as needed
 )
 
+
+class TotalResultForm(forms.ModelForm):
+    class Meta:
+        model = TotalResult
+        fields = [
+            'r_id',
+            'batch',
+            'total_att_credit',
+            'total_earn_credit',
+            'gpa',
+            'cgpa',
+        ]

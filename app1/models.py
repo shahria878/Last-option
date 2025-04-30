@@ -72,5 +72,22 @@ class Result(models.Model):
     grade_point = models.CharField(max_length=10, null=True, blank=True)
     cur_status = models.CharField(max_length=10, null=True, blank=True)
 
+    def __str__(self):
+        return f"{self.s_code} - {self.grade}"
+    
+class TotalResult(models.Model):
+    r_id = models.ForeignKey(Student, on_delete=models.CASCADE)
+    batch = models.CharField(max_length=20, null=True, blank=True)
+    total_att_credit = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+    total_earn_credit = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+    gpa = models.CharField(max_length=20, null=True, blank=True)
+    cgpa = models.CharField(max_length=20, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.r_id} - {self.cgpa}"
+
+
+
+
     
 

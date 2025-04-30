@@ -129,6 +129,7 @@ def ResultPage(request, id):
     admitcards = AdmitCard.objects.filter(sid=student)
     registers = CourseRegister.objects.filter(studentid=student)
     results = Result.objects.filter(mainid=student)
+    tresults = TotalResult.objects.filter(r_id=student)
 
     context = {
         'student': student,
@@ -136,29 +137,26 @@ def ResultPage(request, id):
         'admitcards': admitcards,
         'registers': registers,
         'results': results,
+        'tresults': tresults,
     }
     return render (request,'result.html',context=context)
 
+def total_result_list(request):
+    return render(request, 'results.html')
 
-def PaymentPage(request, id):
-    student = get_object_or_404(Student, pk=id)
-    
-    # Assuming your model Installment has fields: due_date, feetype, amount, paid_amount, status
-    installments = Installment.objects.filter(student=student).order_by('due_date')
+# Update View
+def update_total_result(request, pk):
+    result = get_object_or_404(TotalResult, pk=pk)
+    if request.method == 'POST':
+        form = TotalResultForm(request.POST, instance=result)
+        if form.is_valid():
+            form.save()
+            return redirect('alluser')  # Change to your desired redirect URL
+    else:
+        form = TotalResultForm(instance=result)
+    return render(request, 'total_result_form.html', {'form': form})
 
-    # Total calculations
-    total_bill = installments.aggregate(total=Sum('amount'))['total'] or 0
-    total_paid = installments.aggregate(paid=Sum('paid_amount'))['paid'] or 0
-    balance = total_bill - total_paid
 
-    context = {
-        'student': student,
-        'installments': installments,
-        'total_bill': total_bill,
-        'total_paid': total_paid,
-        'balance': balance,
-    }
-    return render(request, 'payment.html', context)
 
 
 @csrf_exempt
@@ -254,7 +252,7 @@ def create_result(request):
 
         if result_formset.is_valid():
             result_formset.save()
-            return redirect('alluser')  # Replace with actual URL name or redirect
+            return redirect('total_result_form')  # Replace with actual URL name or redirect
     else:
         result_formset = ResultFormsetCreate(queryset=Result.objects.none())
 
@@ -263,6 +261,19 @@ def create_result(request):
         'update': False,
     }
     return render(request, 'resultform.html', context)
+
+
+@csrf_exempt
+def create_total_result(request):
+    if request.method == 'POST':
+        form = TotalResultForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('alluser')  # Change to your desired redirect URL
+    else:
+        form = TotalResultForm()
+    return render(request, 'total_result_form.html', {'form': form})
+
 
 
 

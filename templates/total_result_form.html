@@ -1,0 +1,15 @@
+<!-- app1/templates/app1/total_result_form.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Total Result Form</title>
+</head>
+<body>
+    <h1>Total Result Form</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>

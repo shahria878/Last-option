@@ -42,7 +42,9 @@ urlpatterns = [
     path('update-admitcard/<int:sid>/', views.update_admitcard, name='admitform'),
     path('resultform/', views.create_result, name='resultform'),
     path('update-result/<int:student_id>/', views.update_result, name='resultform'),
-    path('payment/<int:id>/', views.PaymentPage, name='payment_page'),
+    path('total-result-form/', views.create_total_result, name='total_result_form'),
+    path('results/', views.total_result_list, name='total_result_list'),
+    path('total-result/update/<int:pk>/', views.update_total_result, name='update_total_result'),
 
 
 

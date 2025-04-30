@@ -3,106 +3,110 @@
 {% block content %}
 <title>Result</title>
 <style>
-
 .message-box {
-      background-color: #f9ffdd;
-      padding: 8px 30px;
-      border: 1px solid #c7e3a3;
-      margin-bottom: 20px;
-  }
+  background-color: #f9ffdd;
+  padding: 8px 30px;
+  border: 1px solid #c7e3a3;
+  margin-bottom: 20px;
+}
 
-  .form-section, .student-info {
-      margin-bottom: 20px;
-      padding: 12px 30px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-  }
-
+.form-section, .student-info {
+  margin-bottom: 20px;
+  padding: 12px 30px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
 
 label {
-      display: inline-block;
-      width: 150px;
-      font-weight: bold;
-  }
+  display: inline-block;
+  width: 150px;
+  font-weight: bold;
+}
 
-  input[type="text"], select {
-      padding: 5px;
-      width: 200px;
-  }
+input[type="text"], select {
+  padding: 5px;
+  width: 200px;
+}
 
-  .student-info p {
-      margin: 5px 0;
-  }
+.student-info p {
+  margin: 5px 0;
+}
 
-  table {
-    padding: 30px;
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-  }
+table {
+  padding: 30px;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
 
+th, td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
 
-  th, td {
-      padding: 10px;
-      border: 1px solid #ccc;
-      text-align: left;
-  }
+th {
+  background-color: #001f5b;
+  color: white;
+}
 
-  th {
-      background-color: #001f5b;
-      color: white;
-  }
+tr:nth-child(even) {
+  background-color: #eaf4fd;
+}
 
-  tr:nth-child(even) {
-      background-color: #eaf4fd;
-  }
-
-  tr:nth-child(odd) {
-      background-color: #ffffff;
-  }
+tr:nth-child(odd) {
+  background-color: #ffffff;
+}
 </style>
-<!-- Main Content -->
+
 <div class="content">
   <h2 style="padding: 5px 30px;">Student Course Result</h2>
 
   <div class="message-box">
-      <strong>Message:</strong>
+    <strong>Note:</strong> Table will show all results only when Selected Semester = Student Session.
   </div>
 
   <div class="form-section">
     {% for info in infos %}
-      <p><label>Registration No :</label><input type="text" value="{{info.sroll}}" readonly></p>
-      {% endfor %}
-      <p><label>Semester:</label>
-          <select>
-              <option>-Select-</option>
-              <option>Fall 2024</option>
-              <option>Spring 2024</option>
-          </select>
-      </p>
+      <p><label>Registration No :</label><input type="text" value="{{ info.sroll }}" readonly></p>
+    {% endfor %}
+    <p>
+      <label>Semester:</label>
+      <select id="semesterDropdown" onchange="checkMatch()">
+        <option value="">-Select-</option>
+        <option>Fall 2024</option>
+        <option>Spring 2024</option>
+        <option>Spring 2023</option>
+      </select>
+    </p>
   </div>
 
   <div class="student-info">
-      {% for info in infos %}
+    {% for info in infos %}
       <p><strong>Student Name :</strong> {{ info.sname }}</p>
-      {% endfor %}
-      <p><strong>Batch :</strong> [054] Fall 2022</p>
-      {% for info in infos %}
+    {% endfor %}
+    {% for results in tresults %}
+      <p><strong>Batch :</strong> {{ results.batch }}</p>
+    {% endfor %}
+    {% for info in infos %}
       <p><strong>Program :</strong> {{ info.program }}</p>
-      {% endfor %}
-      <p><strong>Total Attempted Credit :</strong> 106.50</p>
-      <p><strong>Total Earned Credit :</strong> 73.50</p>
-      
-      <p><strong>GPA :</strong> {{ result.gra }}</p>
-      <p><strong>CGPA :</strong> {{ result.cgpa }}</p>
-      
+      <p><strong>Session :</strong> <span id="session">{{ info.session }}</span></p>
+    {% endfor %}
+    {% for results in tresults %}
+      <p><strong>Total Attempted Credit :</strong> {{ results.total_att_credit }}</p>
+      <p><strong>Total Earned Credit :</strong> {{ results.total_earn_credit }}</p>
+      <p><strong>GPA :</strong> {{ results.gpa }}</p>
+      <p><strong>CGPA :</strong> {{ results.cgpa }}</p>
+    {% endfor %}
   </div>
 
-  <table>
+  <!-- Result Table -->
+  <table id="resultTable">
     <thead>
       <tr>
         <th>Sl</th>
-        <th>Course ID</th>
+        <th>Semester</th>
+        <th>Course Id</th>
         <th>Course Name</th>
         <th>Credit</th>
         <th>Grade</th>
@@ -110,13 +114,14 @@ label {
         <th>Course Status</th>
       </tr>
     </thead>
-    <tbody>
-        {% for result in results %}
-      <tr>
+    <tbody id="resultBody">
+      {% for result in results %}
+      <tr class="resultRow">
         <td>{{ forloop.counter }}</td>
-        <td>{{ result.s_code }}</td>
-        <td>{{ result.s_title }}</td>
-        <td>{{ register.credits }}</td>
+        <td>{{ result.s_code.semester }}</td>
+        <td>{{ result.s_code.code }}</td>
+        <td>{{ result.s_code.title }}</td>
+        <td>{{ result.s_code.credits }}</td>
         <td>{{ result.grade }}</td>
         <td>{{ result.grade_point }}</td>
         <td>{{ result.cur_status }}</td>
@@ -124,10 +129,22 @@ label {
       {% endfor %}
     </tbody>
   </table>
-
-  
 </div>
 
+<script>
+function checkMatch() {
+  const selectedSemester = document.getElementById("semesterDropdown").value.trim();
+  const session = document.getElementById("session").innerText.trim();
+  const resultRows = document.querySelectorAll(".resultRow");
 
+  resultRows.forEach(row => {
+    if (selectedSemester === session) {
+      row.style.display = "";
+    } else {
+      row.style.display = "none";
+    }
+  });
+}
+</script>
 
 {% endblock %}
