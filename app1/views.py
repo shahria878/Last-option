@@ -332,6 +332,8 @@ def update_student(request, student_id):
     )
 
     if request.method == 'POST':
+
+        print(request.POST)
         student_form = StudentForm(request.POST, instance=student)
         profile_form = StudentProfileForm(request.POST, instance=profile)
         info_form = StudentInfoForm(request.POST, request.FILES, instance=info)
@@ -358,9 +360,10 @@ def update_student(request, student_id):
             for course in course_formset.deleted_objects:
                 course.delete()
 
-            return redirect('admitform', sid=student.id)
+            return redirect('paymentform')
         
     else:
+        
         student_form = StudentForm(instance=student)
         profile_form = StudentProfileForm(instance=profile)
         info_form = StudentInfoForm(instance=info)
@@ -375,8 +378,36 @@ def update_student(request, student_id):
         'student_id': student.id,
     }
     return render(request, 'student_form.html', context)
-    
 
+def update_payment(request, sid):
+    student = get_object_or_404(Student, id=sid)
+    payment = get_object_or_404(LastPayment, l_student=student)
+
+    if request.method == 'POST':
+        student_form = StudentForm(request.POST, instance=student)
+        payment_form = LastPaymentForm(request.POST, instance=payment)
+
+        if student_form.is_valid() and payment_form.is_valid():
+            student = student_form.save()
+            payment = payment_form.save(commit=False)
+            payment.l_student = student
+            payment.save()
+            return redirect('admitform', sid=student.id)  # pass sid if admitform needs it
+        else:
+            print("Student Form Errors:", student_form.errors)
+            print("Payment Form Errors:", payment_form.errors)
+    else:
+        # 🔥 This ensures the form is pre-filled with existing data (like name, ID, etc.)
+        student_form = StudentForm(instance=student)
+        payment_form = LastPaymentForm(instance=payment)
+
+    context = {
+        'student_form': student_form,
+        'payment_form': payment_form,
+        'update': True,  # Optional: to customize template buttons
+    }
+
+    return render(request, 'paymentform.html', context)
 
 @csrf_exempt
 def update_admitcard(request, sid):
@@ -422,21 +453,21 @@ def update_result(request, student_id):
     return render(request, 'resultform.html', context)
 
 
-
+@login_required
 def delete_student_confirm(request, student_id):
     student = get_object_or_404(Student, id=student_id)
 
     if request.method == 'POST':
-        # Delete related objects manually
+        # Delete related records
         StudentProfile.objects.filter(roll=student).delete()
         StudentInfo.objects.filter(sroll=student).delete()
         CourseRegister.objects.filter(studentid=student).delete()
         LastPayment.objects.filter(l_student=student).delete()
-        FinalAdmitCard.objects.filter(student=student).delete()
+        FinalAdmitCard.objects.filter(fid=student).delete()
 
-        # Then delete the student itself
+        # Delete the student record
         student.delete()
 
-        return redirect('alluser')  # your all students list page
+        return redirect('alluser')  # Your URL name for student list page
 
     return render(request, 'delete_confirm.html', {'student': student})

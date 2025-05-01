@@ -48,6 +48,12 @@ urlpatterns = [
     path('payment-details/<int:student_id>/', views.StudentPaymentPage, name='payment'),
     path('create-payment/', views.create_payment, name='paymentform'),
     path('payment-details/<str:studentid>/', views.StudentPaymentPage, name='student_payment'),
+    path('payment/update/<int:payment_id>/', views.update_payment, name='paymentform'),
+    path('update-payment/<int:student_id>/', views.update_payment, name='update_payment'),
+    path('payment/update/<int:student_id>/', views.update_payment, name='update_payment'),
+    path('payment/update/<int:sid>/', views.update_payment, name='update_payment'),
+    path('update-payment/<int:sid>/', views.update_payment, name='update_payment'),
+    
 
 
 
