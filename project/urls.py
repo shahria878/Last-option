@@ -45,6 +45,8 @@ urlpatterns = [
     path('total-result-form/', views.create_total_result, name='total_result_form'),
     path('results/', views.total_result_list, name='total_result_list'),
     path('total-result/update/<int:pk>/', views.update_total_result, name='update_total_result'),
+    path('payment-details/<int:student_id>/', views.PaymentPage, name='payment'),
+    path('create-payment/', views.create_payment, name='paymentform'),
 
 
 

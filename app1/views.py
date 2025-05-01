@@ -105,6 +105,23 @@ def LogoutPage(request):
     logout(request)
     return redirect('login')
 
+
+def PaymentPage(request, student_id):
+    student = get_object_or_404(Student, id=student_id)
+    infos = StudentInfo.objects.filter(sroll=student)
+    admitcards = AdmitCard.objects.filter(sid=student)
+    registers = CourseRegister.objects.filter(studentid=student)
+    payments = Payment.objects.filter(student=student)
+
+    context = {
+        'student': student,
+        'infos': infos,
+        'admitcards': admitcards,
+        'registers': registers,
+        'payments': payments,
+    }
+    return render(request, 'payment.html', context)
+
 def admitcard_page(request, id):
     student = get_object_or_404(Student, pk=id)
     infos = StudentInfo.objects.filter(sroll=student)
@@ -193,7 +210,7 @@ def create_student(request):
                 course.studentid = student
                 course.save()
 
-            return redirect('admitform')
+            return redirect('paymentform')
     
     else:
         student_form = StudentForm()
@@ -217,6 +234,19 @@ def create_student(request):
         'update': False,
     }
     return render(request, 'student_form.html', context)
+
+@csrf_exempt
+def create_payment(request):
+    if request.method == 'POST':
+        form = PaymentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('admitform')  # Replace with your actual success page/view
+    else:
+        form = PaymentForm()
+
+    return render(request, 'paymentform.html', {'form': form})
+
 
 
 @csrf_exempt
@@ -361,39 +391,26 @@ def update_admitcard(request, sid):
 def update_result(request, student_id):
     student = get_object_or_404(Student, pk=student_id)
 
-    ResultFormsetUpdate = modelformset_factory(
-        Result,
-        form=ResultForm,
-        extra=0,  # No blank forms
-        can_delete=True  # Allow deletion if needed
-    )
-
     queryset = Result.objects.filter(mainid=student)
+
+    ResultFormsetUpdate = modelformset_factory(Result, form=ResultForm, extra=0)
 
     if request.method == 'POST':
         formset = ResultFormsetUpdate(request.POST, queryset=queryset)
         if formset.is_valid():
-            result_instances = formset.save(commit=False)
-
-            for result in result_instances:
-                result.mainid = student  # Ensure the student is assigned
-                result.save()
-
-            for deleted in formset.deleted_objects:
-                deleted.delete()
-
-            return redirect('result', id=student_id)  # Redirect to result page
+            instances = formset.save(commit=False)
+            for instance in instances:
+                instance.mainid = student  
+                instance.save()
+            return redirect('result', id=student_id)
     else:
         formset = ResultFormsetUpdate(queryset=queryset)
 
     context = {
+        'student': student,
         'result_formset': formset,
-        'update': True,
     }
-
     return render(request, 'resultform.html', context)
-
-
 
 
 

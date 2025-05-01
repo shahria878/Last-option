@@ -242,7 +242,7 @@
         <li><a href="{% url 'result' info.sroll.pk %}">Result</a></li>
         {% endfor %}
         {% for info in infos %}
-        <li><a href="">Student Bill & Payment History</a></li>
+        <li><a href="{% url 'payment' info.sroll.pk %}">Student Bill & Payment History</a></li>
         {% endfor %}
       
     </ul>

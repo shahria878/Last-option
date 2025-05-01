@@ -51,6 +51,37 @@ class CourseRegister(models.Model):
         return f"{self.code} - {self.title}"
     
 
+class Payment(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    waiver = models.CharField(max_length=100, null=True, blank=True)
+    payment_type = models.CharField(
+        max_length=50,
+        choices=[
+            ('Tuition(mid)', 'Tuition(mid)'),
+            ('Admission', 'Admission'),
+            ('Registration', 'Registration'),
+            ('Late Fee', 'Late Fee'),
+            ('Retake Fee', 'Retake Fee'),
+            ('Other', 'Other'),
+        ]
+    )
+    total_bill = models.DecimalField(max_digits=10, decimal_places=2)
+    total_paid = models.DecimalField(max_digits=10, decimal_places=2)
+    due = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_date = models.CharField(max_length=10, null=True, blank=True)
+    transaction_id = models.CharField(max_length=100, unique=True)
+    status = models.CharField(
+        max_length=20,
+        choices=[('Pending', 'Pending'), ('Completed', 'Completed'), ('Failed', 'Failed')],
+        default='Completed'
+    )
+    remarks = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.student} - {self.payment_type} - {self.due} BDT"
+
+    
+
 class AdmitCard(models.Model):
     sid = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='admitcard_student')
     schedule = models.CharField(max_length=100, null=True, blank=True)
