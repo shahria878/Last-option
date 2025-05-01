@@ -51,6 +51,37 @@ class CourseRegister(models.Model):
         return f"{self.code} - {self.title}"
     
 
+class StudentPayment(models.Model):
+    s_student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    s_waiver = models.CharField(max_length=100, null=True, blank=True)
+    s_due_date = models.DateField()
+    s_payment_type = models.CharField(
+        max_length=50,
+        choices=[
+            ('Tuition(mid)', 'Tuition(mid)'),
+            ('Admission', 'Admission'),
+            ('Registration', 'Registration'),
+            ('Late Fee', 'Late Fee'),
+            ('Retake Fee', 'Retake Fee'),
+            ('Other', 'Other'),
+        ]
+    )
+    s_total_bill = models.DecimalField(max_digits=10, decimal_places=2)
+    s_total_paid = models.DecimalField(max_digits=10, decimal_places=2)
+    s_due = models.DecimalField(max_digits=10, decimal_places=2)
+    s_payment_date = models.DateField()
+    s_transaction_id = models.CharField(max_length=100, unique=True)
+    s_STATUS_CHOICES = [
+        ('Paid', 'Paid'),
+        ('UnPaid', 'UnPaid'),
+    ]
+    s_status = models.CharField(max_length=10, choices=s_STATUS_CHOICES)
+    s_remarks = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.s_student} - {self.s_payment_type} - {self.s_due} BDT"
+    
+
 class Payment(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     waiver = models.CharField(max_length=100, null=True, blank=True)

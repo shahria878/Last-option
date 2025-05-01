@@ -106,12 +106,12 @@ def LogoutPage(request):
     return redirect('login')
 
 
-def PaymentPage(request, student_id):
+def StudentPaymentPage(request, student_id):
     student = get_object_or_404(Student, id=student_id)
     infos = StudentInfo.objects.filter(sroll=student)
     admitcards = AdmitCard.objects.filter(sid=student)
     registers = CourseRegister.objects.filter(studentid=student)
-    payments = Payment.objects.filter(student=student)
+    payments = StudentPayment.objects.filter(s_student=student)
 
     context = {
         'student': student,
@@ -238,12 +238,12 @@ def create_student(request):
 @csrf_exempt
 def create_payment(request):
     if request.method == 'POST':
-        form = PaymentForm(request.POST)
+        form = StudentPaymentForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('admitform')  # Replace with your actual success page/view
     else:
-        form = PaymentForm()
+        form = StudentPaymentForm()
 
     return render(request, 'paymentform.html', {'form': form})
 

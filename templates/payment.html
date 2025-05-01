@@ -151,8 +151,8 @@ tr:nth-child(odd) {
       <div><strong>Session:</strong>{{ info.session }}</div>
       {% endfor %}
       {% for payment in payments %}
-      <div><strong>Date:</strong> {{ payment.payment_date }}</div>
-      <div><strong>Entry level waiver:</strong>{{ payment.waiver }}</div>
+      <div><strong>Date:</strong> {{ payment.s_payment_date }}</div>
+      <div><strong>Entry level waiver:</strong>{{ payment.s_waiver }}</div>
       {% endfor %}
     </div>
   </div>
@@ -178,14 +178,18 @@ tr:nth-child(odd) {
 
   <div class="row">
     <div class="card" style="flex: 1; margin-right: 20px;">
-      <div><strong>Total Bill (This Semester):</strong> <span class="amount">85500.00</span></div>
-      <div><strong>Total Paid (This Semester):</strong> <span class="amount">67500.00</span></div>
-      <div><strong>Balance:</strong> <span class="due">18000.00</span></div>
+      {% for payment in payments %}
+      <div><strong>Total Bill (This Semester):</strong> <span class="amount">{{ payment.s_total_bill }}</span></div>
+      <div><strong>Total Paid (This Semester):</strong> <span class="amount">{{ payment.s_total_paid }}</span></div>
+      <div><strong>Balance:</strong> <span class="due">{{ payment.s_due }}</span></div>
+      {% endfor %}
     </div>
   </div>
 
   <div class="card">
-    <h3>Installment Fall - 2024</h3>
+    {% for info in infos %}
+    <h3>Installment {{ info.session }}</h3>
+    {% endfor %}
     <table>
       <thead>
         <tr>
@@ -197,41 +201,15 @@ tr:nth-child(odd) {
         </tr>
       </thead>
       <tbody>
+        {% for payment in payments %}
         <tr>
-          <td>23-Jan-2025</td>
-          <td>1st Installment Registration</td>
+          <td>{{ payment.s_due_date }}</td>
+          <td>{{ payment.s_payment_type }}</td>
           <td>40000</td>
           <td>40000</td>
-          <td>Paid</td>
+          <td>{{ payment.s_status }}</td>
         </tr>
-        <tr>
-          <td>9-Mar-2025</td>
-          <td>2nd Installment 30% of Tuition Fees</td>
-          <td>13500</td>
-          <td>13500</td>
-          <td>Paid</td>
-        </tr>
-        <tr>
-          <td>9-Mar-2025</td>
-          <td>2nd Installment Late Fine</td>
-          <td>500</td>
-          <td>500</td>
-          <td>Paid</td>
-        </tr>
-        <tr>
-          <td>13-Apr-2025</td>
-          <td>3rd Installment (Mid term)</td>
-          <td>13500</td>
-          <td>13500</td>
-          <td>Paid</td>
-        </tr>
-        <tr>
-          <td>8-May-2025</td>
-          <td>4th Installment (Final)</td>
-          <td>18000</td>
-          <td>0</td>
-          <td>UnPaid</td>
-        </tr>
+        {% endfor %}
       </tbody>
     </table>
   </div>
