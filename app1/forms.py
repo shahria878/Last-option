@@ -59,6 +59,7 @@ class LastPaymentForm(forms.ModelForm):
             'l_status',
             'l_remarks',
         ]
+        
 
 
 class AdmitCardForm(forms.ModelForm):

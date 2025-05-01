@@ -47,6 +47,8 @@ urlpatterns = [
     path('total-result/update/<int:pk>/', views.update_total_result, name='update_total_result'),
     path('payment-details/<int:student_id>/', views.StudentPaymentPage, name='payment'),
     path('create-payment/', views.create_payment, name='paymentform'),
+    path('payment-details/<str:studentid>/', views.StudentPaymentPage, name='student_payment'),
+
 
 
 

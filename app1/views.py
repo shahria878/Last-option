@@ -112,7 +112,8 @@ def StudentPaymentPage(request, student_id):
     infos = StudentInfo.objects.filter(sroll=student)
     admitcards = AdmitCard.objects.filter(sid=student)
     registers = CourseRegister.objects.filter(studentid=student)
-    payments = LastPayment.objects.filter(t_student=student)
+    payments = LastPayment.objects.filter(l_student=student)
+
     today = timezone.now().date()
 
     context = {
@@ -425,6 +426,7 @@ def delete_student_confirm(request, student_id):
         StudentProfile.objects.filter(roll=student).delete()
         StudentInfo.objects.filter(sroll=student).delete()
         CourseRegister.objects.filter(studentid=student).delete()
+        LastPayment.objects.filter(l_student=student).delete()
         AdmitCard.objects.filter(student=student).delete()
 
         # Then delete the student itself
