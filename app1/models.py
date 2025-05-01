@@ -51,6 +51,39 @@ class CourseRegister(models.Model):
         return f"{self.code} - {self.title}"
     
 
+class TotalPayment(models.Model):
+    t_student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    t_waiver = models.CharField(max_length=100, null=True, blank=True)
+    t_due_date = models.DateField()
+    t_payment_type = models.CharField(
+        max_length=50,
+        choices=[
+            ('Tuition(mid)', 'Tuition(mid)'),
+            ('Admission', 'Admission'),
+            ('Registration', 'Registration'),
+            ('Late Fee', 'Late Fee'),
+            ('Retake Fee', 'Retake Fee'),
+            ('Other', 'Other'),
+        ]
+    )
+    installment = models.DecimalField(max_digits=10, decimal_places=2)
+    pay = models.DecimalField(max_digits=10, decimal_places=2)
+    t_total_bill = models.DecimalField(max_digits=10, decimal_places=2)
+    t_total_paid = models.DecimalField(max_digits=10, decimal_places=2)
+    t_due = models.DecimalField(max_digits=10, decimal_places=2)
+    t_payment_date = models.DateField()
+    t_transaction_id = models.CharField(max_length=100, unique=True)
+    t_STATUS_CHOICES = [
+        ('Paid', 'Paid'),
+        ('UnPaid', 'UnPaid'),
+    ]
+    t_status = models.CharField(max_length=10, choices=t_STATUS_CHOICES)
+    t_remarks = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.t_student} - {self.t_payment_type} - {self.t_due} BDT"
+    
+
 class StudentPayment(models.Model):
     s_student = models.ForeignKey(Student, on_delete=models.CASCADE)
     s_waiver = models.CharField(max_length=100, null=True, blank=True)
@@ -80,36 +113,6 @@ class StudentPayment(models.Model):
 
     def __str__(self):
         return f"{self.s_student} - {self.s_payment_type} - {self.s_due} BDT"
-    
-
-class Payment(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    waiver = models.CharField(max_length=100, null=True, blank=True)
-    payment_type = models.CharField(
-        max_length=50,
-        choices=[
-            ('Tuition(mid)', 'Tuition(mid)'),
-            ('Admission', 'Admission'),
-            ('Registration', 'Registration'),
-            ('Late Fee', 'Late Fee'),
-            ('Retake Fee', 'Retake Fee'),
-            ('Other', 'Other'),
-        ]
-    )
-    total_bill = models.DecimalField(max_digits=10, decimal_places=2)
-    total_paid = models.DecimalField(max_digits=10, decimal_places=2)
-    due = models.DecimalField(max_digits=10, decimal_places=2)
-    payment_date = models.CharField(max_length=10, null=True, blank=True)
-    transaction_id = models.CharField(max_length=100, unique=True)
-    status = models.CharField(
-        max_length=20,
-        choices=[('Pending', 'Pending'), ('Completed', 'Completed'), ('Failed', 'Failed')],
-        default='Completed'
-    )
-    remarks = models.TextField(blank=True, null=True)
-
-    def __str__(self):
-        return f"{self.student} - {self.payment_type} - {self.due} BDT"
 
     
 

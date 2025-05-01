@@ -150,8 +150,9 @@ tr:nth-child(odd) {
       <div><strong>Student Name:</strong>{{ info.sname }}</div>
       <div><strong>Session:</strong>{{ info.session }}</div>
       {% endfor %}
+      
+      <div><strong>Date:</strong> {{ today }}</div>
       {% for payment in payments %}
-      <div><strong>Date:</strong> {{ payment.s_payment_date }}</div>
       <div><strong>Entry level waiver:</strong>{{ payment.s_waiver }}</div>
       {% endfor %}
     </div>
@@ -292,5 +293,7 @@ tr:nth-child(odd) {
     }
   }
 </script>
+
+
 
 {% endblock %}

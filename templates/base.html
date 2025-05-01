@@ -253,7 +253,30 @@
 {% endblock content %}
 
 
+<div style="text-align: center; margin-top: 40px;">
+  <div id="clock" style="font-size: 18px; font-weight: bold; color: #555;"></div>
+</div>
 
+<script>
+  function updateClock() {
+    const now = new Date();
+    const options = {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true
+    };
+    const formattedTime = now.toLocaleString('en-US', options);
+    document.getElementById('clock').innerHTML = "📅 Current Time: " + formattedTime;
+  }
+
+  setInterval(updateClock, 1000);
+  updateClock();
+</script>
 
 
 <!-- About Section -->

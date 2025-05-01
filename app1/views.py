@@ -10,6 +10,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from .forms import CourseRegisterFormSet
 from django.db.models import Sum
+from django.utils import timezone
 from .models import *
 from .forms import *
 # Create your views here.
@@ -111,7 +112,8 @@ def StudentPaymentPage(request, student_id):
     infos = StudentInfo.objects.filter(sroll=student)
     admitcards = AdmitCard.objects.filter(sid=student)
     registers = CourseRegister.objects.filter(studentid=student)
-    payments = StudentPayment.objects.filter(s_student=student)
+    payments = TotalPayment.objects.filter(t_student=student)
+    today = timezone.now().date()
 
     context = {
         'student': student,
@@ -119,6 +121,7 @@ def StudentPaymentPage(request, student_id):
         'admitcards': admitcards,
         'registers': registers,
         'payments': payments,
+        'today': today,
     }
     return render(request, 'payment.html', context)
 
@@ -238,12 +241,12 @@ def create_student(request):
 @csrf_exempt
 def create_payment(request):
     if request.method == 'POST':
-        form = StudentPaymentForm(request.POST)
+        form = TotalPaymentForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('admitform')  # Replace with your actual success page/view
     else:
-        form = StudentPaymentForm()
+        form = TotalPaymentForm()
 
     return render(request, 'paymentform.html', {'form': form})
 
