@@ -38,14 +38,16 @@ CourseRegisterFormSet = modelformset_factory(
     extra=2  # you can change this
 )
 
-class TotalPaymentForm(forms.ModelForm):
+class FinalPaymentForm(forms.ModelForm):
     class Meta:
-        model = TotalPayment
+        model = FinalPayment
         fields = [
-            't_student',
-            't_waiver',
-            't_due_date',
+            'f_student',
+            'f_waiver_persent',
+            'f_fee_type',
+            't_fees',
             't_payment_type',
+            't_waiver_taka',
             'installment',
             'pay',
             't_total_bill',
