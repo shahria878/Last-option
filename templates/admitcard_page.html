@@ -1,142 +1,93 @@
 {% extends "base.html" %}
-
 {% block content %}
+<title>Admit Card</title>
 
-  <title>Admit Card</title>
-  <style>
-    
-    
+<!-- Load html2pdf.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-    .active {
-      color: black;
-    }
+<style>
+   .main { padding: 30px; background-color: #f4f4f4; }
+  .form-box { background: white; padding: 20px; border: 1px solid #ddd; border-radius: 6px; }
+  .form-group { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
+  .form-group label { font-weight: bold; width: 100px; }
+  select, input[type="radio"] { padding: 5px; font-size: 14px; }
 
-    /* Main Content */
-    .main {
-      padding: 30px;
-      background-color: #f4f4f4;
-    }
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    margin-top: 30px;
+  }
+  .data-table th, .data-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+  }
+  button {
+    margin: 20px 0;
+    padding: 10px 20px;
+    background-color: #2e1a84;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+</style>
 
-    .main h2 {
-      color: #000080;
-    }
+<div class="main">
+  <h2>Admit Card: Course List</h2>
 
-    .form-box {
-      background: white;
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-    }
-
-    .form-group {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 10px 0;
-    }
-
-    .form-group label {
-      font-weight: bold;
-      width: 100px;
-    }
-
-    select, input[type="radio"] {
-      padding: 5px;
-      font-size: 14px;
-    }
-
-    button {
-        margin-top: 30px;
-            width: 100px;
-            background-color: white;
-            color: #080710;
-            padding: 0 0;
-            font-size: 14px;
-            font-weight: 160;
-            border-radius: 0;
-            cursor: pointer;
-        }
-
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-      background: white;
-    }
-
-    .data-table th,
-    .data-table td {
-      border: 1px solid #ccc;
-      padding: 10px;
-      text-align: left;
-    }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      font-size: 14px;
-      padding: 30px 0;
-      color: #444;
-    }
-
-    .footer-line {
-      width: 80%;
-      border: 1px solid #2e1a84;
-      margin: 30px auto 10px auto;
-    }
-  </style>
-
-  <!-- Main Content -->
-  <div class="main">
-    <h2>Admit Card: Program Session And Batch Wise</h2>
-    <div class="form-box">
-      <div class="form-group">
-        <label for="program">Program</label>
-        <select id="program">
-          {% for info in infos %}
-          <option>{{info.program}}</option>
-          {% endfor %}
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="session">Session</label>
-        <select id="session">
-          {% for info in infos %}
-          <option>{{info.session}}</option>
-          {% endfor %}
-        </select>
-      </div>
-
-      
-
-      <div class="form-group">
-        <label>Exam</label>
-        <label><input type="radio" name="exam" checked> Mid</label>
-        <label><input type="radio" name="exam"> Final</label>
-      </div>
-
-      <div class="form-group">
-        <label>Roll</label>
+  <div class="form-box">
+    <div class="form-group">
+      <label for="program">Program</label>
+      <select id="program">
         {% for info in infos %}
-        {{info.sroll}}
-          {% endfor %}
-      </div>
-      <div class="form-group">
-        <label>Bill</label>
-        {% if admitcards %}
-            {{ admitcards.0.bill }}
-        {% endif %}
+          <option>{{ info.program }}</option>
+        {% endfor %}
+      </select>
     </div>
 
-    <input type="hidden" id="billStatus" value="{{ admitcards.0.bill }}">
+    <div class="form-group">
+      <label for="session">Session</label>
+      <select id="session">
+        {% for info in infos %}
+          <option>{{ info.session }}</option>
+        {% endfor %}
+      </select>
+    </div>
 
+    <div class="form-group">
+      <label>Exam</label>
+      <label><input type="radio" name="exam" checked> Mid</label>
+      <label><input type="radio" name="exam"> Final</label>
+    </div>
+
+    <div class="form-group">
+      <label>Roll</label>
+      {% for info in infos %}
+        {{ info.sroll }}
+      {% endfor %}
+    </div>
+
+    <div class="form-group">
+      <label>Bill Status:</label>
+      {% if admitcards %}
+        {{ admitcards.fbill.l_status }}
+      {% else %}
+        No bill record available.
+      {% endif %}
+    </div>
     
-      <button class="load-button" onclick="loadData()">LOAD</button>
-    </div>
+    <input type="hidden" id="billStatus" value="{{ admitcards.fbill.l_status }}">
+    
 
-    <!-- Placeholder Table -->
-    <table class="data-table" id="results">
+  
+
+  <button onclick="downloadPDF()">Download PDF</button>
+
+  <!-- This is the only part that will be included in the PDF -->
+  <div id="tableToDownload">
+    <table class="data-table">
       <thead>
         <tr>
           <th>Sl.NO.</th>
@@ -147,39 +98,44 @@
         </tr>
       </thead>
       <tbody>
-        <!-- JavaScript will populate rows here -->
+        {% for register in registers %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ register.code }}</td>
+          <td>{{ register.title }}</td>
+          <td>{{ register.credits }}</td>
+          <td></td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">No courses found.</td></tr>
+        {% endfor %}
       </tbody>
     </table>
   </div>
+</div>
 
-  
 <script>
-  function loadData() {
-    const billStatus = document.getElementById("billStatus").value;
 
-    if (billStatus === "Unpaid") {
-      alert("You cannot load data because your bill is unpaid.");
-      return; // Stop the function
-    }
+function checkBillStatus() {
+  const billStatus = document.getElementById("billStatus").value;
+  if (billStatus === "UnPaid") {
+    alert("Bill is unpaid. Access denied.");
+    return false;
+  } else {
+    alert("Bill is paid. Proceed.");
+    return true;
+  }
+}
 
-    const tbody = document.querySelector("#results tbody");
-    tbody.innerHTML = `
-      {% for register in registers %}
-      <tr>
-        <td>{{ forloop.counter }}</td>
-        <td>{{ register.code }}</td>
-        <td>{{ register.title }}</td>
-        <td>{{ register.credits }}</td>
-        <td></td>
-      </tr>
-      {% empty %}
-      <tr>
-        <td colspan="8">No courses found.</td>
-      </tr>
-      {% endfor %}
-    `;
+  function downloadPDF() {
+    const element = document.getElementById('tableToDownload');
+    html2pdf().from(element).set({
+      margin: 0.5,
+      filename: 'admit_card_table.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    }).save();
   }
 </script>
-
-  {% endblock %}
-  
+{% endblock %}

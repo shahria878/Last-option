@@ -62,15 +62,10 @@ class LastPaymentForm(forms.ModelForm):
         
 
 
-class AdmitCardForm(forms.ModelForm):
+class FinalAdmitCardForm(forms.ModelForm):
     class Meta:
-        model = AdmitCard
-        fields = [
-            'sid',
-            'schedule',
-            'exam',
-            'bill',
-        ]
+        model = FinalAdmitCard
+        fields = ['fid', 'fsemester', 'fbill', 'fexam', 'fschedule']
 
 class ResultForm(forms.ModelForm):
     class Meta:

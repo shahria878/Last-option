@@ -98,20 +98,19 @@ class LastPayment(models.Model):
 
     def __str__(self):
         return f"{self.l_student} - {self.l_payment_type} - {self.l_due} BDT"
-
     
 
-class AdmitCard(models.Model):
-    sid = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='admitcard_student')
-    schedule = models.CharField(max_length=100, null=True, blank=True)
-    exam = models.CharField(
+class FinalAdmitCard(models.Model):
+    fid = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='admit_student')
+    fsemester = models.ForeignKey(StudentInfo, on_delete=models.CASCADE, related_name='admit_semester')
+    fbill = models.ForeignKey(LastPayment, on_delete=models.CASCADE, related_name='admitcard_bill')
+    fexam = models.CharField(
         max_length=20,
         choices=[('Mid', 'Mid'), ('Final', 'Final')]
     )
-    bill = models.CharField(
-        max_length=20,
-        choices=[('Paid', 'Paid'), ('Prepaid', 'Prepaid'), ('Unpaid', 'Unpaid'), ('Halfpaid', 'Halfpaid')]
-    )
+    fschedule = models.CharField(max_length=100, null=True, blank=True)
+
+    
 
 
 class Result(models.Model):

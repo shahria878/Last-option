@@ -110,7 +110,7 @@ def LogoutPage(request):
 def StudentPaymentPage(request, student_id):
     student = get_object_or_404(Student, id=student_id)
     infos = StudentInfo.objects.filter(sroll=student)
-    admitcards = AdmitCard.objects.filter(sid=student)
+    admitcards = FinalAdmitCard.objects.filter(fid=student)
     registers = CourseRegister.objects.filter(studentid=student)
     payments = LastPayment.objects.filter(l_student=student)
 
@@ -129,14 +129,16 @@ def StudentPaymentPage(request, student_id):
 def admitcard_page(request, id):
     student = get_object_or_404(Student, pk=id)
     infos = StudentInfo.objects.filter(sroll=student)
-    admitcards = AdmitCard.objects.filter(sid=student)
+    admitcards = FinalAdmitCard.objects.filter(fid=student)
     registers = CourseRegister.objects.filter(studentid=student)
+    payments = LastPayment.objects.filter(l_student=student)
 
     context = {
         'student': student,
         'infos': infos,
         'admitcards': admitcards,
-        'registers': registers
+        'registers': registers,
+        'payments': payments,
     }
 
     return render(request, 'admitcard_page.html', context)
@@ -147,7 +149,7 @@ def admitcard_page(request, id):
 def ResultPage(request, id):
     student = get_object_or_404(Student, pk=id)
     infos = StudentInfo.objects.filter(sroll=student)
-    admitcards = AdmitCard.objects.filter(sid=student)
+    admitcards = FinalAdmitCard.objects.filter(fid=student)
     registers = CourseRegister.objects.filter(studentid=student)
     results = Result.objects.filter(mainid=student)
     tresults = TotalResult.objects.filter(r_id=student)
@@ -256,16 +258,16 @@ def create_payment(request):
 @csrf_exempt
 def create_admitcard(request, sid=None):
     if request.method == 'POST':
-        admitcard_form = AdmitCardForm(request.POST)
+        admitcard_form = FinalAdmitCardForm(request.POST)
         if admitcard_form.is_valid():
             admitcard = admitcard_form.save()
             return redirect('resultform')  # Form submit hole kon page e jabe (change korte paro)
     else:
         if sid:
             student = get_object_or_404(Student, id=sid)
-            admitcard_form = AdmitCardForm(initial={'sid': student})
+            admitcard_form = FinalAdmitCardForm(initial={'fid': student})
         else:
-            admitcard_form = AdmitCardForm()
+            admitcard_form = FinalAdmitCardForm()
 
     context = {
         'admitcard_form': admitcard_form,
@@ -376,15 +378,15 @@ def update_student(request, student_id):
 @csrf_exempt
 def update_admitcard(request, sid):
     student = get_object_or_404(Student, id=sid)
-    admitcard = AdmitCard.objects.filter(sid=student).first()
+    admitcard = FinalAdmitCard.objects.filter(fid=student).first()
 
     if request.method == 'POST':
-        admitcard_form = AdmitCardForm(request.POST, instance=admitcard)
+        admitcard_form = FinalAdmitCardForm(request.POST, instance=admitcard)
         if admitcard_form.is_valid():
             admitcard_form.save()
             return redirect('resultform')  # Success hole jeikhane jete chai
     else:
-        admitcard_form = AdmitCardForm(instance=admitcard)
+        admitcard_form = FinalAdmitCardForm(instance=admitcard)
 
     context = {
         'admitcard_form': admitcard_form,
@@ -427,7 +429,7 @@ def delete_student_confirm(request, student_id):
         StudentInfo.objects.filter(sroll=student).delete()
         CourseRegister.objects.filter(studentid=student).delete()
         LastPayment.objects.filter(l_student=student).delete()
-        AdmitCard.objects.filter(student=student).delete()
+        FinalAdmitCard.objects.filter(student=student).delete()
 
         # Then delete the student itself
         student.delete()
