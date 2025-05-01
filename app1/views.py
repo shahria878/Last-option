@@ -112,7 +112,7 @@ def StudentPaymentPage(request, student_id):
     infos = StudentInfo.objects.filter(sroll=student)
     admitcards = AdmitCard.objects.filter(sid=student)
     registers = CourseRegister.objects.filter(studentid=student)
-    payments = FinalPayment.objects.filter(t_student=student)
+    payments = LastPayment.objects.filter(t_student=student)
     today = timezone.now().date()
 
     context = {
@@ -241,12 +241,12 @@ def create_student(request):
 @csrf_exempt
 def create_payment(request):
     if request.method == 'POST':
-        form = FinalPaymentForm(request.POST)
+        form = LastPaymentForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('admitform')  # Replace with your actual success page/view
     else:
-        form = FinalPaymentForm()
+        form = LastPaymentForm()
 
     return render(request, 'paymentform.html', {'form': form})
 

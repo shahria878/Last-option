@@ -50,11 +50,11 @@ class CourseRegister(models.Model):
     def __str__(self):
         return f"{self.code} - {self.title}"
     
-
-class FinalPayment(models.Model):
-    f_student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    f_waiver_persent = models.CharField(max_length=100, null=True, blank=True)
-    f_fee_type = models.CharField(
+class LastPayment(models.Model):
+    l_student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    l_waiver_persent = models.CharField(max_length=100, null=True, blank=True)
+    l_due_date = models.DateField()
+    l_fee_type = models.CharField(
         max_length=200,
         choices=[
             ('1st Installment Registration', '1st Installment Registration'),
@@ -64,8 +64,8 @@ class FinalPayment(models.Model):
             ('Late Fees', 'Late Fees'),
         ]
     )
-    t_fees = models.DecimalField(max_digits=10, decimal_places=2)
-    t_payment_type = models.CharField(
+    l_fees = models.DecimalField(max_digits=10, decimal_places=2)
+    l_payment_type = models.CharField(
         max_length=100,
         choices=[
             ('Tuition(Mid Term)', 'Tuition(Mid Term)'),
@@ -81,26 +81,24 @@ class FinalPayment(models.Model):
 
         ]
     )
-    t_waiver_taka = models.DecimalField(max_digits=10, decimal_places=2)
-    installment = models.DecimalField(max_digits=10, decimal_places=2)
-    pay = models.DecimalField(max_digits=10, decimal_places=2)
-    t_total_bill = models.DecimalField(max_digits=10, decimal_places=2)
-    t_total_paid = models.DecimalField(max_digits=10, decimal_places=2)
-    t_due = models.DecimalField(max_digits=10, decimal_places=2)
-    t_payment_date = models.DateField()
-    t_transaction_id = models.CharField(max_length=100, unique=True)
-    t_STATUS_CHOICES = [
+    l_waiver_taka = models.DecimalField(max_digits=10, decimal_places=2)
+    l_installment = models.DecimalField(max_digits=10, decimal_places=2)
+    l_pay = models.DecimalField(max_digits=10, decimal_places=2)
+    l_total_bill = models.DecimalField(max_digits=10, decimal_places=2)
+    l_total_paid = models.DecimalField(max_digits=10, decimal_places=2)
+    l_due = models.DecimalField(max_digits=10, decimal_places=2)
+    l_payment_date = models.DateField()
+    l_transaction_id = models.CharField(max_length=100, unique=True)
+    l_STATUS_CHOICES = [
         ('Paid', 'Paid'),
         ('UnPaid', 'UnPaid'),
     ]
-    t_status = models.CharField(max_length=10, choices=t_STATUS_CHOICES)
-    t_remarks = models.TextField(blank=True, null=True)
+    l_status = models.CharField(max_length=10, choices=l_STATUS_CHOICES)
+    l_remarks = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.t_student} - {self.t_payment_type} - {self.t_due} BDT"
-    
-    
-    
+        return f"{self.l_student} - {self.l_payment_type} - {self.l_due} BDT"
+
     
 
 class AdmitCard(models.Model):
