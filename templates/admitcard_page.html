@@ -6,7 +6,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
-   .main { padding: 30px; background-color: #f4f4f4; }
+  .main { padding: 30px; background-color: #f4f4f4; }
   .form-box { background: white; padding: 20px; border: 1px solid #ddd; border-radius: 6px; }
   .form-group { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
   .form-group label { font-weight: bold; width: 100px; }
@@ -23,6 +23,13 @@
     padding: 10px;
     text-align: left;
   }
+  th {
+    background-color: #001f5b;
+    color: white;
+  }
+  tr:nth-child(even) { background-color: #eaf4fd; }
+  tr:nth-child(odd) { background-color: #ffffff; }
+
   button {
     margin: 20px 0;
     padding: 10px 20px;
@@ -71,21 +78,16 @@
 
     <div class="form-group">
       <label>Bill Status:</label>
-      {% if admitcards %}
-        {{ admitcards.fbill.l_status }}
-      {% else %}
-        No bill record available.
-      {% endif %}
+      {% for payment in payments %}
+        {{ payment.l_status }}
+      {% endfor %}
     </div>
-    
-    <input type="hidden" id="billStatus" value="{{ admitcards.fbill.l_status }}">
-    
+  </div>
 
-  
+  {% if has_paid %}
+    <button onclick="downloadPDF()">Download PDF</button>
+  {% endif %}
 
-  <button onclick="downloadPDF()">Download PDF</button>
-
-  <!-- This is the only part that will be included in the PDF -->
   <div id="tableToDownload">
     <table class="data-table">
       <thead>
@@ -98,35 +100,31 @@
         </tr>
       </thead>
       <tbody>
-        {% for register in registers %}
-        <tr>
-          <td>{{ forloop.counter }}</td>
-          <td>{{ register.code }}</td>
-          <td>{{ register.title }}</td>
-          <td>{{ register.credits }}</td>
-          <td></td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="5">No courses found.</td></tr>
-        {% endfor %}
+        {% if has_paid %}
+          {% for register in registers %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ register.code }}</td>
+              <td>{{ register.title }}</td>
+              <td>{{ register.credits }}</td>
+              <td></td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="5">No courses found.</td></tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="5" style="text-align:center; color:red;">
+              Bill is unpaid. Admit card not available.
+            </td>
+          </tr>
+        {% endif %}
       </tbody>
     </table>
   </div>
 </div>
 
 <script>
-
-function checkBillStatus() {
-  const billStatus = document.getElementById("billStatus").value;
-  if (billStatus === "UnPaid") {
-    alert("Bill is unpaid. Access denied.");
-    return false;
-  } else {
-    alert("Bill is paid. Proceed.");
-    return true;
-  }
-}
-
   function downloadPDF() {
     const element = document.getElementById('tableToDownload');
     html2pdf().from(element).set({

@@ -153,7 +153,7 @@ tr:nth-child(odd) {
       
       <div><strong>Date:</strong> {{ today }}</div>
       {% for payment in payments %}
-      <div><strong>Entry level waiver:</strong>{{ payment.l_waiver }}</div>
+      <div><strong>Entry level waiver:</strong>{{ payment.l_waiver_persent }}</div>
       {% endfor %}
     </div>
   </div>
@@ -182,7 +182,7 @@ tr:nth-child(odd) {
       {% for payment in payments %}
       <div><strong>Total Bill (This Semester):</strong> <span class="amount">{{ payment.l_total_bill }}</span></div>
       <div><strong>Total Paid (This Semester):</strong> <span class="amount">{{ payment.l_total_paid }}</span></div>
-      <div><strong>Balance:</strong> <span class="due">{{ payment.s_due }}</span></div>
+      <div><strong>Balance:</strong> <span class="due">{{ payment.l_due }}</span></div>
       {% endfor %}
     </div>
   </div>

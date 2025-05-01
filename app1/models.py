@@ -99,6 +99,7 @@ class LastPayment(models.Model):
     def __str__(self):
         return f"{self.l_student} - {self.l_payment_type} - {self.l_due} BDT"
     
+    
 
 class FinalAdmitCard(models.Model):
     fid = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='admit_student')

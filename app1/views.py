@@ -133,12 +133,15 @@ def admitcard_page(request, id):
     registers = CourseRegister.objects.filter(studentid=student)
     payments = LastPayment.objects.filter(l_student=student)
 
+    has_paid = all(p.l_status == "Paid" for p in payments)
+
     context = {
         'student': student,
         'infos': infos,
         'admitcards': admitcards,
         'registers': registers,
         'payments': payments,
+        'has_paid': has_paid,
     }
 
     return render(request, 'admitcard_page.html', context)
