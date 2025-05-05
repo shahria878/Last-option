@@ -1,0 +1,11 @@
+<!-- templates/notifications.html -->
+<h2>Your Notifications</h2>
+<ul>
+  {% for n in notifications %}
+    <li {% if not n.is_read %}style="font-weight: bold;"{% endif %}>
+      {{ n.message }} – <small>{{ n.created_at|naturaltime }}</small>
+    </li>
+  {% empty %}
+    <li>No notifications found.</li>
+  {% endfor %}
+</ul>

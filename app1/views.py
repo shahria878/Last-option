@@ -6,6 +6,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from django.forms import modelformset_factory
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.http import HttpResponse
 from .forms import CourseRegisterFormSet
@@ -16,7 +17,7 @@ from .forms import *
 # Create your views here.
 @login_required(login_url='login')
 def HomePage(request):
-    return render(request, 'home.html')
+    return render (request,'home.html')
 
 def SignupPage(request):
     if request.method=='POST':
@@ -25,7 +26,6 @@ def SignupPage(request):
         pass1=request.POST.get('password1')
         pass2=request.POST.get('password2')
 
-
         if pass1!=pass2:
             return HttpResponse("Your password and confrom password are not Same!!")
         else:
@@ -33,8 +33,11 @@ def SignupPage(request):
             my_user=User.objects.create_user(uname,email,pass1)
             my_user.save()
             return redirect('login')
-    
-    return render(request, 'signup.html')
+        
+
+
+
+    return render (request,'signup.html')
 
 def LoginPage(request):
     if request.method=='POST':
@@ -47,7 +50,11 @@ def LoginPage(request):
         else:
             return HttpResponse ("Username or Password is incorrect!!!")
 
-    return render(request, 'login.html')
+    return render (request,'login.html')
+
+def LogoutPage(request):
+    logout(request)
+    return redirect('login')
 
 login_required
 def ChangepassPage(request):
@@ -62,13 +69,19 @@ def ChangepassPage(request):
             user.set_password(pass1)  # Proper way to change password
             user.save()
             update_session_auth_hash(request, user)  # Keeps user logged in
-            return redirect('login')  # Or wherever you want to redirect
+            return redirect('logout')  # Or wherever you want to redirect
         
     students = Student.objects.all()
     infos = StudentInfo.objects.all()
     context = {'students': students,
                'infos': infos}
     return render(request, 'changepass.html',context=context)
+
+
+
+def notification_list(request):
+    notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'notifications.html', {'notifications': notifications})
 
 def StudentinfoPage(request, id):
     students = get_object_or_404(StudentProfile, pk=id)
@@ -94,6 +107,8 @@ def course_register_page(request, id):
     return render(request, 'course_register.html', context=context)
 
 
+
+
 def AllusersPage(request):
     students = Student.objects.all()
     infos = StudentInfo.objects.all()
@@ -102,9 +117,7 @@ def AllusersPage(request):
     return render(request, 'alluser.html',context=context)
 
 
-def LogoutPage(request):
-    logout(request)
-    return redirect('login')
+
 
 
 def StudentPaymentPage(request, student_id):
@@ -379,8 +392,9 @@ def update_student(request, student_id):
     }
     return render(request, 'student_form.html', context)
 
-def update_payment(request, sid):
-    student = get_object_or_404(Student, id=sid)
+@csrf_exempt
+def update_payment(request, student_id):
+    student = get_object_or_404(Student, id=student_id)
     payment = get_object_or_404(LastPayment, l_student=student)
 
     if request.method == 'POST':
@@ -392,19 +406,19 @@ def update_payment(request, sid):
             payment = payment_form.save(commit=False)
             payment.l_student = student
             payment.save()
-            return redirect('admitform', sid=student.id)  # pass sid if admitform needs it
+            return redirect('admitform', sid=student.id) 
         else:
             print("Student Form Errors:", student_form.errors)
             print("Payment Form Errors:", payment_form.errors)
     else:
-        # 🔥 This ensures the form is pre-filled with existing data (like name, ID, etc.)
+    
         student_form = StudentForm(instance=student)
         payment_form = LastPaymentForm(instance=payment)
 
     context = {
         'student_form': student_form,
         'payment_form': payment_form,
-        'update': True,  # Optional: to customize template buttons
+        'update': True,  
     }
 
     return render(request, 'paymentform.html', context)

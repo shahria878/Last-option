@@ -119,6 +119,21 @@ tr:nth-child(even) {
 tr:nth-child(odd) {
   background-color: #ffffff;
 }
+
+.payment-button {
+  background-color: #17a2b8;
+  color: white;
+  padding: 6px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px;
+}
+.payment-button:hover {
+  background-color: #138496;
+}
+
 </style>
 
 <div>
@@ -170,8 +185,12 @@ tr:nth-child(odd) {
       <div style="margin-bottom: 10px;">I want to pay ৳:
         <input type="number" id="payAmount" placeholder="Enter amount">
       </div>
-      <button onclick="payOnline()">Pay Online</button>
-      <button onclick="payBkash()">Payment with Bkash</button>
+      <div style="margin-top: 10px; text-align: center;">
+        <button class="payment-button" onclick="payOnline()">Pay Online</button>
+        <button class="payment-button" onclick="payBkash()">Payment with Bkash</button>
+      </div>
+      
+      
       <p><a href="https://drive.google.com/file/d/1zX4DDFTFTHSpN5Rkf0nLQ1AeKDkAMtZS/view">Online Payment Help Link</a></p>
     </div>
   </div>

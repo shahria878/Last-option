@@ -1,36 +1,20 @@
-"""
-URL configuration for project project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from . import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
-from django.urls import path,include
+from django.urls import path
 from app1 import views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('studentinfo/<str:id>/', views.StudentinfoPage, name='studentinfo'),
     path('',views.SignupPage,name='signup'),
     path('login/',views.LoginPage,name='login'),
     path('home/',views.HomePage,name='home'),
-    path('alluser/',views.AllusersPage,name='alluser'),
     path('logout/',views.LogoutPage,name='logout'),
+
+    path('studentinfo/<str:id>/', views.StudentinfoPage, name='studentinfo'),
+    path('alluser/',views.AllusersPage,name='alluser'),
     path('changepass/',views.ChangepassPage,name='changepass'),
     path('result/<int:id>/', views.ResultPage, name='result'),
     path('result/<str:id>/', views.ResultPage, name='result'),
@@ -50,11 +34,13 @@ urlpatterns = [
     path('payment-details/<int:student_id>/', views.StudentPaymentPage, name='payment'),
     path('create-payment/', views.create_payment, name='paymentform'),
     path('payment-details/<str:studentid>/', views.StudentPaymentPage, name='student_payment'),
-    path('payment/update/<int:payment_id>/', views.update_payment, name='paymentform'),
+    path('payment/update/<int:student_id>/', views.update_payment, name='paymentform'),
     path('update-payment/<int:student_id>/', views.update_payment, name='update_payment'),
     path('payment/update/<int:student_id>/', views.update_payment, name='update_payment'),
     path('payment/update/<int:sid>/', views.update_payment, name='update_payment'),
     path('update-payment/<int:sid>/', views.update_payment, name='update_payment'),
+    path('notifications/', views.notification_list, name='notification_list'),
+    
     
 
 
