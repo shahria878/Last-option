@@ -36,11 +36,11 @@
 }
 
 .status .green {
-  color: #b6ffb6;
+  color: #187a18de;
 }
 
 .status .red {
-  color: #ffb6b6;
+  color: #b01717;
 }
 
 .user-panel img {
@@ -63,7 +63,7 @@
       display: flex;
       align-items: center;
       padding: 45px;
-      background-color: #6DB4E3;
+      background-color: #4A90E2;
       position: relative;
     }
 
@@ -198,7 +198,7 @@
     
 
     .footer {
-    background-color: #4a90e2;
+    background-color: #4A90E2;
     color: white;
     width: 100%;
     padding: 90px 50px; /* Increased top-bottom padding */
@@ -298,7 +298,7 @@
     <div class="user-info">
       {% for info in infos %}
       <p><strong>{{ info.sname }}</strong> {{info.sroll}} /
-        <a href="{% url 'logout' %}">Logout</a>
+        <a href="{% url 'logout' %}" style="color: #205898;">Logout</a>
       </p>
       <p class="status">
         <span class="green">Current →</span> Fall 2024 - Term<br />

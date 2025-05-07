@@ -87,7 +87,7 @@ class LastPayment(models.Model):
     l_total_bill = models.DecimalField(max_digits=10, decimal_places=2)
     l_total_paid = models.DecimalField(max_digits=10, decimal_places=2)
     l_due = models.DecimalField(max_digits=10, decimal_places=2)
-    l_payment_date = models.DateField()
+    l_payment_date = models.DateField(null=True, blank=True)
     l_transaction_id = models.CharField(max_length=100, unique=True)
     l_STATUS_CHOICES = [
         ('Paid', 'Paid'),
