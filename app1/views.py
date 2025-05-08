@@ -259,7 +259,7 @@ def create_payment(request):
     
 
 
-
+@csrf_exempt
 def create_admitcard(request):
     if request.method == 'POST':
         form = FinalAdmitCardForm(request.POST)
@@ -431,7 +431,7 @@ def update_admitcard(request, sid):
         admitcard_form = FinalAdmitCardForm(request.POST, instance=admitcard)
         if admitcard_form.is_valid():
             admitcard_form.save()
-            return redirect('paymentform')  # সফলভাবে আপডেট হলে রিডাইরেক্ট করুন
+            return redirect('paymentform') 
     else:
         admitcard_form = FinalAdmitCardForm(instance=admitcard)
 

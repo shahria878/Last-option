@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+
 {% block content %}
 <title>Admit Card</title>
 
@@ -6,29 +7,98 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
-  .main { padding: 30px; background-color: #f4f4f4; }
-  .form-box { background: white; padding: 20px; border: 1px solid #ddd; border-radius: 6px; }
-  .form-group { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
-  .form-group label { font-weight: bold; width: 100px; }
-  select, input[type="radio"] { padding: 5px; font-size: 14px; }
+  .main {
+    padding: 30px;
+    background-color: #f4f4f4;
+  }
+
+  .form-box {
+    background: white;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+  }
+
+  .form-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+  }
+
+  .form-group label {
+    font-weight: bold;
+    width: 100px;
+  }
+
+  select,
+  input[type="radio"] {
+    padding: 5px;
+    font-size: 14px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .header h2 {
+    margin: 0;
+    font-size: 24px;
+  }
+
+  .header h3 {
+    margin: 0;
+    font-size: 18px;
+  }
+
+  .info-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 10px;
+  }
+
+  .student-info {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .photo {
+    width: 120px;
+    height: 150px;
+    border: 1px solid #000;
+    object-fit: cover;
+    display: block;
+    margin-left: 20px;
+  }
 
   .data-table {
     width: 100%;
     border-collapse: collapse;
     background: white;
-    margin-top: 30px;
+    margin-top: 10px;
   }
-  .data-table th, .data-table td {
+
+  .data-table th,
+  .data-table td {
     border: 1px solid #ccc;
     padding: 10px;
     text-align: left;
   }
+
   th {
     background-color: #4A90E2;
     color: white;
   }
-  tr:nth-child(even) { background-color: #eaf4fd; }
-  tr:nth-child(odd) { background-color: #ffffff; }
+
+  tr:nth-child(even) {
+    background-color: #eaf4fd;
+  }
+
+  tr:nth-child(odd) {
+    background-color: #ffffff;
+  }
 
   button {
     margin: 20px 0;
@@ -38,6 +108,25 @@
     border: none;
     cursor: pointer;
     border-radius: 4px;
+  }
+
+  .card-box {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 20px;
+    margin-top: 30px;
+    background-color: #fff;
+  }
+
+  .header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .header-text {
+    flex-grow: 1;
+    text-align: center;
   }
 </style>
 
@@ -49,7 +138,7 @@
       <label for="program">Program</label>
       <select id="program">
         {% for info in infos %}
-          <option>{{ info.program }}</option>
+        <option>{{ info.program }}</option>
         {% endfor %}
       </select>
     </div>
@@ -58,7 +147,7 @@
       <label for="session">Session</label>
       <select id="session">
         {% for info in infos %}
-          <option>{{ info.session }}</option>
+        <option>{{ info.session }}</option>
         {% endfor %}
       </select>
     </div>
@@ -72,23 +161,54 @@
     <div class="form-group">
       <label>Roll</label>
       {% for info in infos %}
-        {{ info.sroll }}
+      {{ info.sroll }}
       {% endfor %}
     </div>
 
     <div class="form-group">
       <label>Bill Status:</label>
       {% for payment in payments %}
-        {{ payment.l_status }}
+      {{ payment.l_status }}
       {% endfor %}
     </div>
   </div>
 
   {% if has_paid %}
-    <button onclick="downloadPDF()">Download PDF</button>
+  <button onclick="downloadPDF()">Download PDF</button>
   {% endif %}
 
-  <div id="tableToDownload">
+  <div class="card-box" id="tableToDownload">
+    <div class="header-section">
+      <div class="header-text">
+        <h2 style="margin-left: 175px;">University of Asia Pacific</h2>
+        <h5 style="margin-left: 175px;">Admit Card</h5>
+        <h6 style="margin-left: 175px;">Mid-Term  Examination of Fall, 2024</h6>
+      </div>
+      {% for info in infos %}
+      {% if info.pic %}
+      <img src="{{ info.pic.url }}" class="photo" alt="Student Photo">
+      {% endif %}
+      {% endfor %}
+    </div>
+    <div class="form-group" style="margin-top: -78px;">
+      <label>Roll</label>
+      {% for info in infos %}
+      {{info.sroll}}
+      {% endfor %}
+    </div>
+    <div class="form-group">
+      <label>Name</label>
+      {% for info in infos %}
+      {{ info.sname }}
+      {% endfor %}
+    </div>
+    <div class="form-group">
+      <label>Program</label>
+      {% for info in infos %}
+      {{info.program}}
+      {% endfor %}
+    </div>
+
     <table class="data-table">
       <thead>
         <tr>
@@ -101,23 +221,25 @@
       </thead>
       <tbody>
         {% if has_paid %}
-          {% for register in registers %}
-            <tr>
-              <td>{{ forloop.counter }}</td>
-              <td>{{ register.code }}</td>
-              <td>{{ register.title }}</td>
-              <td>{{ register.credits }}</td>
-              <td></td>
-            </tr>
-          {% empty %}
-            <tr><td colspan="5">No courses found.</td></tr>
-          {% endfor %}
+        {% for register in registers %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ register.code }}</td>
+          <td>{{ register.title }}</td>
+          <td>{{ register.credits }}</td>
+          <td></td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5">No courses found.</td>
+        </tr>
+        {% endfor %}
         {% else %}
-          <tr>
-            <td colspan="5" style="text-align:center; color:red;">
-              Bill is unpaid. Admit card not available.
-            </td>
-          </tr>
+        <tr>
+          <td colspan="5" style="text-align:center; color:red;">
+            Bill is unpaid. Admit card not available.
+          </td>
+        </tr>
         {% endif %}
       </tbody>
     </table>
