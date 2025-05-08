@@ -231,16 +231,16 @@
 
 <div class="button-group">
   <a href="{% url 'studentinfo' info.pk %}">
-    <button type="button" style="background-color: #12991d;">Details</button>
+    <button type="button" style="background-color: #12991d; border-radius: 4px; ">Details</button>
   </a>
   <a href="{% url 'update_student' info.sroll.id %}">
-    <button type="button" style="background-color: #12991d;">Update</button>
+    <button type="button" style="background-color: #163e8d; border-radius: 4px;">Update</button>
   </a>
 </div>
 
 <div class="delete-button">
   <a href="{% url 'delete_student' info.sroll.id %}">
-    <button type="button" style="background-color: #e20d0d;">Delete</button>
+    <button type="button" style="background-color: #e20d0d; border-radius: 4px;">Delete</button>
   </a>
 </div>
 

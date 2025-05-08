@@ -183,18 +183,6 @@ def ResultPage(request, id):
 def total_result_list(request):
     return render(request, 'results.html')
 
-# Update View
-def update_total_result(request, pk):
-    result = get_object_or_404(TotalResult, pk=pk)
-    if request.method == 'POST':
-        form = TotalResultForm(request.POST, instance=result)
-        if form.is_valid():
-            form.save()
-            return redirect('alluser')  # Change to your desired redirect URL
-    else:
-        form = TotalResultForm(instance=result)
-    return render(request, 'total_result_form.html', {'form': form})
-
 
 
 
@@ -268,28 +256,23 @@ def create_payment(request):
         form = LastPaymentForm()
 
     return render(request, 'paymentform.html', {'form': form})
+    
 
 
 
-@csrf_exempt
-def create_admitcard(request, sid=None):
+def create_admitcard(request):
     if request.method == 'POST':
-        admitcard_form = FinalAdmitCardForm(request.POST)
-        if admitcard_form.is_valid():
-            admitcard = admitcard_form.save()
-            return redirect('resultform')  # Form submit hole kon page e jabe (change korte paro)
+        form = FinalAdmitCardForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('resultform')  # Redirect to the desired page after successful submission
     else:
-        if sid:
-            student = get_object_or_404(Student, id=sid)
-            admitcard_form = FinalAdmitCardForm(initial={'fid': student})
-        else:
-            admitcard_form = FinalAdmitCardForm()
+        form = FinalAdmitCardForm()
 
     context = {
-        'admitcard_form': admitcard_form,
+        'admitcard_form': form,
     }
     return render(request, 'admitform.html', context)
-
 @csrf_exempt
 def create_result(request):
     ResultFormsetCreate = modelformset_factory(
@@ -373,7 +356,7 @@ def update_student(request, student_id):
             for course in course_formset.deleted_objects:
                 course.delete()
 
-            return redirect('paymentform')
+            return redirect('admitform', sid=student.id)
         
     else:
         
@@ -406,7 +389,7 @@ def update_payment(request, student_id):
             payment = payment_form.save(commit=False)
             payment.l_student = student
             payment.save()
-            return redirect('admitform', sid=student.id) 
+            return redirect('admitform') 
         else:
             print("Student Form Errors:", student_form.errors)
             print("Payment Form Errors:", payment_form.errors)
@@ -424,6 +407,22 @@ def update_payment(request, student_id):
     return render(request, 'paymentform.html', context)
 
 @csrf_exempt
+def update_payment(request, pk):
+
+    student = get_object_or_404(Student, id=pk)
+    payment= LastPaymentForm.objects.filter(l_student=student).first()
+
+    if request.method == 'POST':
+        form = LastPaymentForm(request.POST, instance=payment)
+        if form.is_valid():
+            form.save()
+            return redirect('payment_list')  # সফলভাবে আপডেট হলে রিডাইরেক্ট করুন
+    else:
+        form = LastPaymentForm(instance=payment)
+    return render(request, 'payment_form.html', {'form': form})
+
+
+@csrf_exempt
 def update_admitcard(request, sid):
     student = get_object_or_404(Student, id=sid)
     admitcard = FinalAdmitCard.objects.filter(fid=student).first()
@@ -432,7 +431,7 @@ def update_admitcard(request, sid):
         admitcard_form = FinalAdmitCardForm(request.POST, instance=admitcard)
         if admitcard_form.is_valid():
             admitcard_form.save()
-            return redirect('resultform')  # Success hole jeikhane jete chai
+            return redirect('paymentform')  # সফলভাবে আপডেট হলে রিডাইরেক্ট করুন
     else:
         admitcard_form = FinalAdmitCardForm(instance=admitcard)
 
@@ -440,6 +439,7 @@ def update_admitcard(request, sid):
         'admitcard_form': admitcard_form,
     }
     return render(request, 'admitform.html', context)
+
 
 @csrf_exempt
 def update_result(request, student_id):
@@ -465,6 +465,26 @@ def update_result(request, student_id):
         'result_formset': formset,
     }
     return render(request, 'resultform.html', context)
+
+# Update View
+def update_total_result(request, pk):
+
+    student = get_object_or_404(Student, id=pk)
+    result = TotalResultForm.objects.filter(r_id=student).first()
+
+    
+    if request.method == 'POST':
+        form = TotalResultForm(request.POST, instance=result)
+        if form.is_valid():
+            form.save()
+            return redirect('alluser')  # Change to your desired redirect URL
+    else:
+        form = TotalResultForm(instance=result)
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'total_result_form.html', context)
 
 
 @login_required
