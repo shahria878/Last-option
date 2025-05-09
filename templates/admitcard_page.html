@@ -3,7 +3,6 @@
 {% block content %}
 <title>Admit Card</title>
 
-<!-- Load html2pdf.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
@@ -70,7 +69,6 @@
     border: 1px solid #000;
     object-fit: cover;
     display: block;
-    margin-left: 20px;
   }
 
   .data-table {
@@ -118,6 +116,16 @@
     background-color: #fff;
   }
 
+  .financial-box {
+  border: 1px solid #000;
+  text-align: center;
+  padding: 20px; /* increased from 10px */
+  font-weight: bold;
+  width: 200px; /* increased from 140px */
+  font-size: 16px; /* optional: make text slightly larger */
+}
+
+
   .header-section {
     display: flex;
     justify-content: space-between;
@@ -125,8 +133,16 @@
   }
 
   .header-text {
-    flex-grow: 1;
     text-align: center;
+    flex-grow: 1;
+  }
+
+  .side-left,
+  .side-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
   }
 </style>
 
@@ -179,33 +195,45 @@
 
   <div class="card-box" id="tableToDownload">
     <div class="header-section">
-      <div class="header-text">
-        <h2 style="margin-left: 175px;">University of Asia Pacific</h2>
-        <h5 style="margin-left: 175px;">Admit Card</h5>
-        <h6 style="margin-left: 175px;">Mid-Term  Examination of Fall, 2024</h6>
+      <div class="side-left">
+        <div class="financial-box">
+          Financial Clearance <br> <span style="font-size: 18px;">PAID</span>
+        </div>
       </div>
-      {% for info in infos %}
-      {% if info.pic %}
-      <img src="{{ info.pic.url }}" class="photo" alt="Student Photo">
-      {% endif %}
-      {% endfor %}
+
+      <div class="header-text">
+        <h2>University of Asia Pacific</h2>
+        <h5>Admit Card</h5>
+        <h6>Mid-Term Examination of Fall, 2024</h6>
+      </div>
+
+      <div class="side-right">
+        {% for info in infos %}
+        {% if info.pic %}
+        <img src="{{ info.pic.url }}" class="photo" alt="Student Photo">
+        {% endif %}
+        {% endfor %}
+      </div>
     </div>
-    <div class="form-group" style="margin-top: -78px;">
+
+    <div class="form-group">
       <label>Roll</label>
       {% for info in infos %}
-      {{info.sroll}}
+      {{ info.sroll }}
       {% endfor %}
     </div>
+
     <div class="form-group">
       <label>Name</label>
       {% for info in infos %}
       {{ info.sname }}
       {% endfor %}
     </div>
+
     <div class="form-group">
       <label>Program</label>
       {% for info in infos %}
-      {{info.program}}
+      {{ info.program }}
       {% endfor %}
     </div>
 
@@ -243,6 +271,16 @@
         {% endif %}
       </tbody>
     </table>
+
+    <h6 style="margin-left: 843px; margin-top: 12px;">Total Credit:&nbsp;&nbsp;&nbsp;21.00</h6>
+
+    <h6 style="margin-top: 50px;">1. Examinees are not allowed to enter the examination hall after 30 minutes of commencement of examination for mid semester examinations <br>and 60 minutes for semester final examinations.</h6><br>
+    <h6>2. No examinees shall be allowed to submit their answer scripts before 50% of the allocated time of examination has elapsed.</h6><br>
+    <h6>3. No examinees would be allowed to go to washroom within the first 60 minutes of final examinations.</h6><br>
+    <h6>4. No student will be allowed to carry any books, bags, extra paper or cellular phone or objectionable items/incriminating paper in the examination hall.</h6>
+    <h6>Violators will be subjects to disciplinary action.</h6><br>
+    <h6 style="color: blue;">This is a system generated Admit Card. No signature is required.</h6><br><br><br><br><br><br><br><br><br>
+    <h6 style="text-align:center;">Admit Card Generation Time:</h6>
   </div>
 </div>
 
@@ -250,6 +288,7 @@
   function downloadPDF() {
     const element = document.getElementById('tableToDownload');
     html2pdf().from(element).set({
+      padding: 20,
       margin: 0.5,
       filename: 'admit_card_table.pdf',
       image: { type: 'jpeg', quality: 0.98 },
