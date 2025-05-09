@@ -196,7 +196,7 @@ def create_student(request):
         CourseRegisterFormSetCreate = modelformset_factory(
             CourseRegister,
             form=CourseRegisterForm,
-            extra=2,  # always 2 forms for new student
+            extra=8,  # always 2 forms for new student
             can_delete=False
         )
         course_formset = CourseRegisterFormSetCreate(request.POST, queryset=CourseRegister.objects.none())
@@ -278,7 +278,7 @@ def create_result(request):
     ResultFormsetCreate = modelformset_factory(
         Result,
         form=ResultForm,
-        extra=2,  # Change as needed
+        extra=8,  # Change as needed
         can_delete=False
     )
 

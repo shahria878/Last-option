@@ -35,7 +35,7 @@ class CourseRegisterForm(forms.ModelForm):
 CourseRegisterFormSet = modelformset_factory(
     CourseRegister,
     form=CourseRegisterForm,
-    extra=2  # you can change this
+    extra=8  # you can change this
 )
 
 class LastPaymentForm(forms.ModelForm):
@@ -82,7 +82,7 @@ class ResultForm(forms.ModelForm):
 ResultFormset = modelformset_factory(
         Result,
         form=ResultForm,
-        extra=2  # Change as needed
+        extra=8  # Change as needed
 )
 
 
