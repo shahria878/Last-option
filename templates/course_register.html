@@ -1,21 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <title>Registration</title>
+<title>Registration</title>
 
 <style>
-
   h2 {
     padding: 0px 20px;
     color: red;
-    font-size: 24px; /* increased */
+    font-size: 24px;
   }
 
   .note {
     padding: 0px 20px;
     color: red;
     font-weight: bold;
-    font-size: 16px; /* increased */
+    font-size: 16px;
   }
 
   input[type="text"] {
@@ -26,7 +25,7 @@
     margin-top: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 14px; /* increased */
+    font-size: 14px;
   }
 
   button, .btn {
@@ -35,7 +34,7 @@
     border-radius: 4px;
     background-color: #fff;
     cursor: pointer;
-    font-size: 14px; /* increased */
+    font-size: 14px;
   }
 
   button:hover, .btn:hover {
@@ -56,20 +55,20 @@
   th, td {
     padding: 8px;
     text-align: center;
-    font-size: 14px; /* increased */
+    font-size: 14px;
   }
 
   .btn-add, .btn-remove {
     display: inline-block;
     width: 60px;
     padding: 4px 8px;
-    font-size: 13px; /* increased */
+    font-size: 13px;
     margin: 2px;
   }
 
   .footer {
     text-align: center;
-    font-size: 13px; /* increased */
+    font-size: 13px;
     margin-top: 30px;
     color: #666;
   }
@@ -79,7 +78,7 @@
     border: 1px solid #ddd;
     padding: 10px;
     margin-top: 20px;
-    font-size: 14px; /* increased */
+    font-size: 14px;
   }
 
   .student-info {
@@ -87,7 +86,7 @@
     padding: 12px 20px;
     border-radius: 8px;
     margin-top: 20px;
-    font-size: 14px; /* increased */
+    font-size: 14px;
   }
 
   .student-info p {
@@ -106,19 +105,15 @@
     color: white;
     border: none;
     padding: 5px 10px;
-    font-size: 13px; /* increased */
+    font-size: 13px;
     border-radius: 4px;
     cursor: pointer;
   }
 
   .load-button:hover {
-    background-color: #4A90E2;
+    background-color: #357ABD;
   }
-  
 </style>
-
-
-
 
 <div class="content">
   <h2>New Course Registration</h2>
@@ -129,15 +124,11 @@
     <input type="text" id="regNo" value="{{ student.id }}" readonly />
   </div>
 
-  
-
-<!-- Video link add -->
-<div style="margin-top: 10px; padding: 0px 20px;">
-  <a href="https://www.youtube.com/shorts/NU44H49f7I8" target="_blank" style="color: blue; text-decoration: underline; font-size: 16px;">
-    <p style="color: green; margin-top: 8px;">Registration Tutorial</p>
-  </a>
-</div>
-
+  <div style="margin-top: 10px; padding: 0px 20px;">
+    <a href="https://www.youtube.com/shorts/NU44H49f7I8" target="_blank" style="color: blue; text-decoration: underline; font-size: 16px;">
+      <p style="color: green; margin-top: 8px;">Registration Tutorial</p>
+    </a>
+  </div>
 
   <div class="student-info">
     <p><strong>Pre-Advising Cr. Limit:</strong> 24</p> 
@@ -152,95 +143,98 @@
   <table>
     <thead>
       <tr>
-          <th>SL</th>
-          <th>Code</th>
-          <th>Title</th>
-          <th>Credits</th>
-          <th>Semester</th>
-          <th>Type</th>
-          <th>Action</th>
-          <th>Section Name & Time</th> <!-- ekhanei change hobe -->
+        <th>SL</th>
+        <th>Code</th>
+        <th>Title</th>
+        <th>Credits</th>
+        <th>Semester</th>
+        <th>Type</th>
+        <th>Action</th>
+        <th>Section Name & Time</th>
       </tr>
     </thead>
     <tbody>
       {% for register in registers %}
       <tr>
-          <td>{{ forloop.counter }}</td>
-          <td>{{ register.code }}</td>
-          <td>{{ register.title }}</td>
-          <td>{{ register.credits }}</td>
-          <td>{{ register.semester }}</td>
-          <td>{{ register.type }}</td>
-          <td>
-            <button class="load-button" onclick="showTime(this, '{{ register.section_name_time }}')">Add</button>
-            <button class="load-button" onclick="showNope(this)">Remove</button>
-          </td>
-          <td class="result-cell"></td> <!-- Important: ei class diyei detect korbo -->
+        <td>{{ forloop.counter }}</td>
+        <td>{{ register.code }}</td>
+        <td>{{ register.title }}</td>
+        <td>{{ register.credits }}</td>
+        <td>{{ register.semester }}</td>
+        <td>{{ register.type }}</td>
+        <td>
+          <button class="load-button" onclick="showTime(this, '{{ register.section_name_time }}')">Add</button>
+          <button class="load-button" onclick="showNope(this)">Remove</button>
+        </td>
+        <td class="result-cell"></td>
       </tr>
       {% empty %}
       <tr>
-          <td colspan="8">No courses found.</td>
+        <td colspan="8">No courses found.</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 
-  
-  
-
   <script>
     let totalCredit = 0;
     let registrationFee = 0;
-  
+
     function showTime(button, sectionTime) {
       const row = button.closest('tr');
       const targetCell = row.querySelector('.result-cell');
-  
+      const credit = parseFloat(row.cells[3].innerText.trim());
+
       if (!row.dataset.added) {
-        totalCredit += 3; // 3 credit add hobe
-        registrationFee += 9000; // 3000 fee add hobe
-  
-        document.getElementById('takenCredit').innerText = totalCredit;
+        totalCredit += credit;
+
+        if (credit === 1.5) {
+          registrationFee += 4500;
+        } else {
+          registrationFee += 9000;
+        }
+
+        document.getElementById('takenCredit').innerText = totalCredit.toFixed(1);
         updateRegistrationFee();
-  
+
         targetCell.innerHTML = sectionTime;
-  
+
         row.dataset.added = "true";
-      } else {
-        targetCell.innerHTML = targetCell.innerHTML;
+        row.dataset.removed = "false";
       }
     }
-  
+
     function showNope(button) {
       const row = button.closest('tr');
       const targetCell = row.querySelector('.result-cell');
-  
-      if (row.dataset.added === "true" && !row.dataset.removed) {
-        totalCredit -= 3;
-        if (totalCredit < 0) {
-          totalCredit = 0;
+      const credit = parseFloat(row.cells[3].innerText.trim());
+
+      if (row.dataset.added === "true" && row.dataset.removed !== "true") {
+        totalCredit -= credit;
+        if (totalCredit < 0) totalCredit = 0;
+
+        if (credit === 1.5) {
+          registrationFee -= 4500;
+        } else {
+          registrationFee -= 9000;
         }
-  
-        registrationFee -= 9000;
-        if (registrationFee < 0) {
-          registrationFee = 0;
-        }
-  
-        document.getElementById('takenCredit').innerText = totalCredit;
+
+        if (registrationFee < 0) registrationFee = 0;
+
+        document.getElementById('takenCredit').innerText = totalCredit.toFixed(1);
         updateRegistrationFee();
-  
+
         row.dataset.removed = "true";
       }
-  
+
       targetCell.innerHTML = `<span style="color: red;">NOPE</span>`;
     }
-  
+
     function updateRegistrationFee() {
       const feeElement = document.querySelector('.student-info span[style="color: red;"]');
       feeElement.innerText = registrationFee.toFixed(2);
     }
   </script>
-  
-
+</div>
 
 {% endblock %}

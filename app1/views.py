@@ -12,6 +12,7 @@ from django.http import HttpResponse
 from .forms import CourseRegisterFormSet
 from django.db.models import Sum
 from django.utils import timezone
+from datetime import datetime
 from .models import *
 from .forms import *
 # Create your views here.
@@ -148,6 +149,8 @@ def admitcard_page(request, id):
 
     has_paid = all(p.l_status == "Paid" for p in payments)
 
+    total_credits = sum([reg.credits for reg in registers])
+
     context = {
         'student': student,
         'infos': infos,
@@ -155,6 +158,8 @@ def admitcard_page(request, id):
         'registers': registers,
         'payments': payments,
         'has_paid': has_paid,
+        'total_credits': total_credits,
+        'today': datetime.now(),
     }
 
     return render(request, 'admitcard_page.html', context)
@@ -230,7 +235,7 @@ def create_student(request):
         CourseRegisterFormSetCreate = modelformset_factory(
             CourseRegister,
             form=CourseRegisterForm,
-            extra=2,
+            extra=8,
             can_delete=False
         )
         course_formset = CourseRegisterFormSetCreate(queryset=CourseRegister.objects.none())
