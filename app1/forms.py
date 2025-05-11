@@ -59,6 +59,12 @@ class LastPaymentForm(forms.ModelForm):
             'l_status',
             'l_remarks',
         ]
+
+LastPaymentFormSet = modelformset_factory(
+    LastPayment,
+    form=LastPaymentForm,
+    extra=4  # you can change this
+)
     
         
 

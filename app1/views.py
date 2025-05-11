@@ -264,6 +264,7 @@ def create_payment(request):
     
 
 
+
 @csrf_exempt
 def create_admitcard(request):
     if request.method == 'POST':
