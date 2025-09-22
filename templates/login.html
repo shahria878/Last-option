@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Student Login</title>
+    <title>Citizen Login</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
             font-family: 'Segoe UI', sans-serif;
             background: url('back.jpg') no-repeat center center fixed;
             background-size: cover;
-            background-color: #6DB4E3;
+            background-color: #00C853;
         }
 
         .login-container {
@@ -96,7 +96,7 @@
         .right button {
             width: 100%;
             padding: 12px;
-            background: #6DB4E3;
+            background: #00C853;
             border: none;
             border-radius: 25px;
             font-weight: bold;
@@ -136,12 +136,12 @@
     <div class="login-container">
         <div class="login-box">
             <div class="left">
-                <img src="{% static 'stu.jpeg' %}" alt="Student" class="avatar">
-                <h2>Student Login</h2>
+                <img src="{% static '8D.png' %}" alt="Student" class="avatar">
+                <h2>Citizen Login</h2>
                 <p>make sure your account is secure</p>
             </div>
             <div class="right">
-                <h1 class="form-title"><ion-icon name="school-sharp"></ion-icon> UniCam</h1>
+                <h1 class="form-title"><ion-icon name="color-filter-outline"></ion-icon> Civic Complaint</h1>
                 <form method="post">
                     {% csrf_token %}
                     <h3 style="text-align: center;">Login</h3>
@@ -153,10 +153,12 @@
                             {% endfor %}
                         {% endif %}
                     </div>
+                    <span class="icon"><ion-icon name="person"></ion-icon></span>
 
                     <label for="username">Username</label>
+                    
                     <input type="text" placeholder="Enter Username" id="username" name="username" required>
-
+                    <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
                     <label for="password">Password</label>
                     <input type="password" placeholder="Enter Password" id="password" name="pass" required>
 

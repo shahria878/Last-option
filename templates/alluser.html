@@ -2,19 +2,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Home</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
+<meta charset="UTF-8">
+<title>Citizen Dashboard</title>
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-  <link rel="icon" type="image/png" href="{% static 'cap.jpeg' %}">
+ <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   <style>
     html {
       scroll-behavior: smooth;
     }
 
-   
+   #recommendYes,
+#recommendNo,
+#cancelBtn,
+#submitBtn {
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+.close {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+  font-size: 20px;
+  /* float: right;  -- remove this */
+}
+
+
+#recommendYes:hover,
+#recommendNo:hover,
+#cancelBtn:hover,
+#submitBtn:hover {
+  background-color: #f0f0f0 !important;
+  color: black !important;
+}
 
 
     body {
@@ -28,7 +60,7 @@
       display: flex;
       align-items: center;
       padding: 45px;
-      background-color: #4A90E2;
+      background-color: #00C853;
       position: relative;
     }
 
@@ -124,13 +156,269 @@
     gap: 10px;
     margin-bottom: 10px;
 }
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f9fafb;
+  color: #333;
+}
+header {
+  background: #fff;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+}
+header h1 {
+  font-size: 20px;
+  font-weight: bold;
+}
+header .right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.container {
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+h2 {
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+.cards {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+.card {
+  flex: 1;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+.card h3 {
+  margin: 0;
+  font-size: 18px;
+}
+.card p {
+  margin-top: 5px;
+  margin-bottom: 0;
+  color: #666;
+  font-size: 14px;
+}
+.complaints {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+.complaints-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.complaints-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+.complaints-header p {
+  margin: 0 0 10px 0;
+  color: #555;
+  font-size: 14px;
+  width: 100%;
+}
+select {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.complaint {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  background: #fff;
+}
+.complaint h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.complaint p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #555;
+}
+.status {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+}
+.in-progress {
+  background: #fff4e5;
+  color: #d97706;
+}
+.resolved {
+  background: #e6f9ed;
+  color: #059669;
+}
+.progress-container {
+  margin: 10px 0;
+}
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 3px;
+  font-weight: bold;
+}
+.progress-bar {
+  height: 8px;
+  border-radius: 5px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: #111827;
+  width: 0;
+  transition: width 0.5s ease;
+}
+.actions-stars {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+
+
+button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap; /* Optional: prevent overflow */
+  align-items: center;
+}
+
+.feedback-btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid #ccc;
+  padding: 6px 70px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap; /* Prevent text wrapping */
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.reopen-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap; /* Prevent text wrapping */
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.feedback-btn:hover,
+.reopen-btn:hover {
+  background-color: #f0f0f0;
+  color: black;
+}
+
+.reopen-btn {
+  background: #fee2e2;
+}
+.stars {
+  color: #f59e0b;
+  display: flex;
+  justify-content: flex-end;
+}
+.complaint.active .actions-stars {
+  display: none;
+}
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 100%;
+}
+.close {
+  float: right;
+  cursor: pointer;
+  font-size: 20px;
+}
+.star {
+  font-size: 24px;
+  cursor: pointer;
+}
+.star.selected {
+  color: #f59e0b;
+}
+textarea {
+  width: 100%;
+  height: 80px;
+  margin: 5px 0 10px 0;
+}
+#recommendYes.selected,
+#recommendNo.selected {
+  background: #34d399;
+  color: #fff;
+}
    
 
     /* Footer */
     
 
     .footer {
-    background-color: #4A90E2;
+    background-color: #00C853;
     color: white;
     width: 100%;
     padding: 90px 50px; /* Increased top-bottom padding */
@@ -182,6 +470,33 @@
       right: 57px;
       top: 47px;
     }
+    .feedback-btn, .reopen-btn {
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid #ccc;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.feedback-btn:hover, .reopen-btn:hover {
+  background-color: #f0f0f0;
+  color: black;
+}
+
+button {
+  background-color: white;
+  color: black;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+button:hover {
+  background-color: #f0f0f0;
+}
+
 
 
   </style>
@@ -200,58 +515,305 @@
   </div>
 
   <div class="logo-title">
-    <h2 class="logo"><ion-icon name="school-sharp"></ion-icon> UniCam</h2>
+   <h2 class="logo"><ion-icon name="color-filter-outline"></ion-icon> Civic Complaint</h2>
   </div>
 
   <nav class="navigation">
     <a href="{% url 'home' %}" class="active">Home</a>
-    <a href="{% url 'alluser' %}">Admin</a>
+    <a href="{% url 'alluser' %}">Citizen Dashboard</a>
     <a href="{% url 'changepass' %}">Change Password</a>
     <a href="#footer-section">About</a>
     <a href="#footer-section">Contact</a>
   </nav>
 </header>
-<h3 class="section-heading"  style="text-align: center; margin-top: 20px; margin-bottom: 40px;">All Students</h3>
+<h3 class="section-heading"  style="text-align: center; margin-top: 20px; margin-bottom: 40px;">Dashboard</h3>
 <main class="container">
         
-    <section class="student-info">
+    
         
-        <div class="info-row" style="display: flex; flex-wrap: wrap; gap: 20px;">
-            {% for info in infos %}
-            <div style="border: 1px solid #cddce5; padding: 10px; width: 200px; text-align: center;">
-                {% if info.pic %}
-                <img src="{{ info.pic.url }}" style="height: 150px; width: 150px; object-fit: cover;"><br><br>
-                {% else %}
-                <div style="height: 150px; width: 150px; background: #cddce5; display: flex; align-items: center; justify-content: center;">No Photo</div><br><br>
-                {% endif %}
-                
-                
-                
-                <strong>{{info.sroll}}</strong><br><br>
 
-<div class="button-group">
-  <a href="{% url 'studentinfo' info.pk %}">
-    <button type="button" style="background-color: #12991d; border-radius: 4px; ">Details</button>
-  </a>
-  <a href="{% url 'update_student' info.sroll.id %}">
-    <button type="button" style="background-color: #163e8d; border-radius: 4px;">Update</button>
-  </a>
+
+
+
+</head>
+<body>
+
+
+<div class="container">
+  
+
+  <div class="cards">
+
+    <div class="card"><h3><button class="center-button" onclick="handleClick()" style="padding: 3px 3px; border: none;  ">➕ </button>Submit New Complaint</h3><p>Report a new issue</p></div>
+    <div class="card"><h3 id="resolvedCount" >✅ 2 Resolved</h3><p>Completed complaints</p></div>
+    <div class="card"><h3 id="activeCount">⏳ 1 Active</h3><p>In progress complaints</p></div>
+  </div>
+
+  <div class="complaints">
+    <div class="complaints-header">
+      <h3>My Complaints</h3>
+      <select id="complaintFilter" onchange="filterComplaints()">
+        <option value="all">All Complaints</option>
+        <option value="active">Active</option>
+        <option value="resolved">Resolved</option>
+      </select>
+    </div>
+    <p>View and track all your submitted complaints</p>
+
+    <div id="complaintsList">
+      <div class="complaint active">
+        <h3>Broken street light on Main St <span class="status in-progress">In-progress</span></h3>
+        <p><b>Category:</b> Infrastructure &nbsp; <ion-icon name="location-outline"></ion-icon> Main Street, Block A &nbsp; 2024-01-15</p>
+        <p>The street light has been out for 3 days, making the area unsafe at night.</p>
+        <div class="progress-container">
+          <div class="progress-labels"><span class="progress-text">Progress</span><span class="progress-percentage">75%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
+        </div>
+        <p><b>Assigned To:</b> Field Worker #2</p>
+        <div class="actions-stars">
+          <div class="actions">
+            <button class="feedback-btn">Provide Feedback</button>
+            <button class="reopen-btn">Reopen</button>
+          </div>
+          <div class="stars"></div>
+        </div>
+      </div>
+
+      <div class="complaint resolved">
+        <h3>Pothole on Oak Avenue <span class="status resolved">Resolved</span></h3>
+        <p><b>Category:</b> Roads &nbsp; <ion-icon name="location-outline"></ion-icon> Oak Avenue, Near Park &nbsp; 2024-01-10</p>
+        <p>Large pothole causing damage to vehicles.</p>
+        <div class="progress-container">
+          <div class="progress-labels"><span class="progress-text">Progress</span><span class="progress-percentage">100%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+        </div>
+        <p class="resolved-date"><b>Resolved on:</b> 2024-01-17</p>
+        <p class="feedback-text"><strong>Your Feedback:</strong> Fixed quickly and efficiently!</p>
+        <div class="actions-stars">
+          <div class="actions">
+            <button class="feedback-btn"><ion-icon name="chatbox-outline"></ion-icon>&nbsp;Update Feedback</button>
+            <button class="reopen-btn"><ion-icon name="reload-outline"></ion-icon>&nbsp;Reopen</button>
+          </div>
+          <div class="stars">⭐⭐⭐⭐⭐</div>
+        </div>
+      </div>
+
+      <div class="complaint resolved">
+        <h3>Water supply disruption <span class="status resolved">Resolved</span></h3>
+        <p><b>Category:</b> Water Supply &nbsp; <ion-icon name="location-outline"></ion-icon> Residential Area North &nbsp; 2024-01-08</p>
+        <p>No water supply for the past 2 days in the residential area.</p>
+        <div class="progress-container">
+          <div class="progress-labels"><span class="progress-text">Progress</span><span class="progress-percentage">100%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+        </div>
+        <p class="resolved-date"><b>Resolved on:</b> 2024-01-15</p>
+        <div class="actions-stars">
+          <div class="actions">
+            <button class="feedback-btn"><ion-icon name="chatbox-outline"></ion-icon>&nbsp;Provide Feedback</button>
+            <button class="reopen-btn"><ion-icon name="reload-outline"></ion-icon>&nbsp;Reopen</button>
+          </div>
+          <div class="stars"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="delete-button">
-  <a href="{% url 'delete_student' info.sroll.id %}">
-    <button type="button" style="background-color: #e20d0d; border-radius: 4px;">Delete</button>
-  </a>
+<!-- Feedback Modal -->
+<div id="feedbackModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h3>Provide Feedback</h3>
+    <p>Rate your experience and provide feedback for this resolved complaint</p>
+    <div><strong id="complaintTitle">Complaint Title</strong><p id="complaintLocation">Location</p></div>
+    <div class="rating">
+      <label>Rating</label>
+      <span class="star" data-value="1">☆</span>
+      <span class="star" data-value="2">☆</span>
+      <span class="star" data-value="3">☆</span>
+      <span class="star" data-value="4">☆</span>
+      <span class="star" data-value="5">☆</span>
+    </div>
+    <div>
+      <label>Your Feedback</label>
+      <textarea id="feedbackText" placeholder="Share your experience..."></textarea>
+    </div>
+    <div>
+      <label>Would you recommend our service?</label>
+      <button id="recommendYes">Yes</button>
+      <button id="recommendNo">No</button>
+    </div>
+    <div>
+      <button id="cancelBtn">Cancel</button>
+      <button id="submitBtn">Submit</button>
+    </div>
+  </div>
 </div>
 
+<script>
+function filterComplaints() {
+  const filter = document.getElementById("complaintFilter").value;
+  document.querySelectorAll(".complaint").forEach(card => {
+    card.style.display = (filter === "all" || card.classList.contains(filter)) ? "block" : "none";
+  });
+}
+function updateCounts() {
+  document.getElementById("activeCount").textContent = `⏳ ${document.querySelectorAll(".complaint.active").length} Active`;
+  document.getElementById("resolvedCount").textContent = `✅ ${document.querySelectorAll(".complaint.resolved").length} Resolved`;
+}
+// Reopen button
+document.querySelectorAll(".reopen-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const complaint = btn.closest(".complaint");
+    if(complaint.classList.contains("resolved")) {
+      complaint.classList.remove("resolved");
+      complaint.classList.add("active");
+      const status = complaint.querySelector(".status");
+      status.textContent = "Submitted";
+      status.style.background = "#e0f2fe";
+      status.style.color = "#0369a1";
+      const progressFill = complaint.querySelector(".progress-fill");
+      const progressPercentage = complaint.querySelector(".progress-percentage");
+      progressFill.style.width = "25%";
+      progressPercentage.textContent = "25%";
+      const resolvedDate = complaint.querySelector(".resolved-date");
+      if(resolvedDate) resolvedDate.remove();
+      complaint.querySelector(".stars").innerHTML = '';
+      const feedbackPara = complaint.querySelector(".feedback-text");
+      if(feedbackPara) feedbackPara.remove();
+      complaint.querySelector(".feedback-btn").textContent = "Provide Feedback";
+      const actionsStars = complaint.querySelector(".actions-stars");
+      if(actionsStars) actionsStars.style.display = "none";
+      updateCounts();
+      animateProgress(complaint);
+    }
+  });
+});
+// Feedback modal logic
+const modal = document.getElementById("feedbackModal");
+let currentComplaint = null;
+document.querySelectorAll(".feedback-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    currentComplaint = btn.closest(".complaint");
+    document.getElementById("complaintTitle").textContent = currentComplaint.querySelector("h3").childNodes[0].textContent;
+    document.getElementById("complaintLocation").textContent = currentComplaint.querySelector("p").innerText;
+    const existingFeedback = currentComplaint.querySelector(".feedback-text");
+    document.getElementById("feedbackText").value = existingFeedback ? existingFeedback.textContent.replace("Your Feedback:", "").trim() : "";
+    modal.style.display = "flex";
+  });
+});
+document.querySelector(".close").addEventListener("click", () => modal.style.display = "none");
+document.getElementById("cancelBtn").addEventListener("click", () => modal.style.display = "none");
+// Star rating
+document.querySelectorAll(".star").forEach(star => {
+  star.addEventListener("click", function() {
+    const value = star.getAttribute("data-value");
+    document.querySelectorAll(".star").forEach(s => s.classList.remove("selected"));
+    for(let i=0;i<value;i++) document.querySelectorAll(".star")[i].classList.add("selected");
+  });
+});
+// Recommend buttons
+document.getElementById("recommendYes").addEventListener("click", function(){
+  this.classList.add("selected"); document.getElementById("recommendNo").classList.remove("selected");
+});
+document.getElementById("recommendNo").addEventListener("click", function(){
+  this.classList.add("selected"); document.getElementById("recommendYes").classList.remove("selected");
+});
+// Submit feedback
+document.getElementById("submitBtn").addEventListener("click", () => {
+  const rating = document.querySelectorAll(".star.selected").length;
+  const feedback = document.getElementById("feedbackText").value.trim();
+  if (rating === 0) { alert("Please select a rating."); return; }
+  if (!feedback) { alert("Please provide your feedback."); return; }
+  const starsContainer = currentComplaint.querySelector(".stars");
+  starsContainer.innerHTML = '';
+  for (let i = 0; i < rating; i++) starsContainer.innerHTML += '⭐';
+  let feedbackPara = currentComplaint.querySelector(".feedback-text");
+  if (!feedbackPara) {
+    feedbackPara = document.createElement("p");
+    feedbackPara.classList.add("feedback-text");
+    currentComplaint.insertBefore(feedbackPara, currentComplaint.querySelector(".actions-stars"));
+  }
+  feedbackPara.innerHTML = `<strong>Your Feedback:</strong> ${feedback}`;
+  currentComplaint.querySelector(".feedback-btn").textContent = "Update Feedback";
+  modal.style.display = "none";
+  document.getElementById("feedbackText").value = '';
+  document.querySelectorAll(".star").forEach(s => s.classList.remove("selected"));
+  document.getElementById("recommendYes").classList.remove("selected");
+  document.getElementById("recommendNo").classList.remove("selected");
+});
+// Animate progress from 25% → 100% with resolved date 1 week after complaint date
+function animateProgress(complaint, duration = 300000) {
+  const progressFill = complaint.querySelector(".progress-fill");
+  const progressPercentage = complaint.querySelector(".progress-percentage");
+  const status = complaint.querySelector(".status");
+  const assignedPara = complaint.querySelector("p:nth-of-type(3)");
+  const actionsStars = complaint.querySelector(".actions-stars");
+
+  let width = parseInt(progressPercentage.textContent) || 25; // start at 25%
+  const intervalTime = duration / (100 - width);
+
+  // Get complaint date from the first <p>
+  const dateText = complaint.querySelector("p").textContent;
+  const dateMatch = dateText.match(/\d{4}-\d{2}-\d{2}/);
+  let complaintDate = dateMatch ? new Date(dateMatch[0]) : new Date();
+
+  const interval = setInterval(() => {
+    if (width >= 100) {
+      clearInterval(interval);
+      progressFill.style.width = "100%";
+      progressPercentage.textContent = "100%";
+      status.textContent = "Resolved";
+      status.classList.remove("in-progress");
+      status.classList.add("resolved");
+      if (assignedPara) assignedPara.remove();
+
+      // Add 7 days to original complaint date
+      const resolvedDate = new Date(complaintDate);
+      resolvedDate.setDate(resolvedDate.getDate() + 7);
+
+      const yyyy = resolvedDate.getFullYear();
+      const mm = String(resolvedDate.getMonth() + 1).padStart(2, '0');
+      const dd = String(resolvedDate.getDate()).padStart(2, '0');
+      const dateStr = `${yyyy}-${mm}-${dd}`;
+
+      let datePara = complaint.querySelector(".resolved-date");
+      if (!datePara) {
+        datePara = document.createElement("p");
+        datePara.classList.add("resolved-date");
+        complaint.insertBefore(datePara, complaint.querySelector(".actions-stars"));
+      }
+      datePara.innerHTML = `<b>Resolved on:</b> ${dateStr}`;
+
+      actionsStars.style.display = "flex";
+      complaint.classList.remove("active");
+      complaint.classList.add("resolved");
+      updateCounts();
+    } else {
+      width++;
+      progressFill.style.width = width + "%";
+      progressPercentage.textContent = width + "%";
+    }
+  }, intervalTime);
+}
+// Start progress animation for all active complaints
+document.querySelectorAll(".complaint.active").forEach(c => animateProgress(c));
+</script>
+</body>
+</html>
+
+
+
+
+
+
                 
-            </div>
-            {% endfor %}
+            
+            
         </div>
     </div>
     <div class="center-container"><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-        <button class="center-button" onclick="handleClick()" style="background-color: #4A90E2; color: white; padding: 12px 24px; border: none; border-radius: 8px; font-size: 16px;">Add</button>
-
+        
 <script>
   function handleClick() {
     window.location.href ="{% url 'add_student' %}";
@@ -319,9 +881,7 @@
 <footer class="footer" id="footer-section">
   <div class="footer-section">
       <h3><span class="logo"></span>ABOUT</h3>
-      <p>UniCam is committed to providing quality education with a focus on innovation, leadership, and community <br>
-        development.</p>
-  </div>
+<p>Civic Complaint App delivers a high-quality online system for managing citizen complaints, tracking <br> issues,monitoring resolutions, and ensuring accountability.</p>  </div>
   <div class="footer-section">
       <h3>CONTACT US</h3>
       <a href="tel:123456"  style="color: white;" ><i class="bi bi-telephone-fill" style="color: white;"    ></i> Helpline +123456</a>
@@ -338,7 +898,7 @@
   </div>
 </footer>
 <div class="copyright">
-  <p>© Copyright 2025 | UniCam | All rights reserved.</p>
+  <p>© Copyright 2025 | Civic Complaint | All rights reserved.</p>
 </div>
 <script>
   // Add JavaScript if needed (e.g., interactivity)

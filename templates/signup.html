@@ -8,14 +8,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <title>Student Login</title>
+    <title>Citizen Signup</title>
     <style>
         body {
             margin: 0;
             font-family: 'Segoe UI', sans-serif;
             background: url('back.jpg') no-repeat center center fixed;
             background-size: cover;
-            background-color: #6DB4E3;
+            background-color: #00C853;
         }
 
         .login-container {
@@ -96,7 +96,7 @@
         .right button {
             width: 100%;
             padding: 12px;
-            background: #6DB4E3;
+            background: #00C853;
             border: none;
             border-radius: 25px;
             font-weight: bold;
@@ -161,12 +161,12 @@
     <div class="login-container">
         <div class="login-box">
             <div class="left">
-                <img src="{% static 'stu.jpeg' %}" alt="Student" class="avatar">
-                <h2>Student Signup</h2>
+                <img src="{% static '8D.png' %}" alt="Student" class="avatar">
+                <h2>Citizen Signup</h2>
                 <p>make sure your account is secure</p>
             </div>
             <div class="right">
-                <h1 class="form-title"><ion-icon name="school-sharp"></ion-icon> UniCam</h1>
+                <h1 class="form-title"><ion-icon name="color-filter-outline"></ion-icon>  Civic Complaint</h1>
                 <form action="" method="post">
                     {% csrf_token %}
                     <h3 style="text-align: center;">Signup</h3>

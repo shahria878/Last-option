@@ -36,8 +36,6 @@ urlpatterns = [
     path('update-payment/<int:student_id>/', views.update_payment, name='update_payment'),
     
     
-    
-
 
     
     path('notifications/', views.notification_list, name='notification_list'),

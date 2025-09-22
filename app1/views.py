@@ -4,9 +4,10 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render, get_object_or_404
-from django.views.decorators.csrf import csrf_exempt
 from django.forms import modelformset_factory
 from django.contrib.auth.forms import PasswordChangeForm
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.http import HttpResponse
 from .forms import CourseRegisterFormSet
@@ -77,6 +78,8 @@ def ChangepassPage(request):
     context = {'students': students,
                'infos': infos}
     return render(request, 'changepass.html',context=context)
+
+
 
 
 
@@ -201,7 +204,7 @@ def create_student(request):
         CourseRegisterFormSetCreate = modelformset_factory(
             CourseRegister,
             form=CourseRegisterForm,
-            extra=8,  # always 2 forms for new student
+            extra=2,  # always 2 forms for new student
             can_delete=False
         )
         course_formset = CourseRegisterFormSetCreate(request.POST, queryset=CourseRegister.objects.none())
@@ -235,7 +238,7 @@ def create_student(request):
         CourseRegisterFormSetCreate = modelformset_factory(
             CourseRegister,
             form=CourseRegisterForm,
-            extra=8,
+            extra=2,
             can_delete=False
         )
         course_formset = CourseRegisterFormSetCreate(queryset=CourseRegister.objects.none())
@@ -284,7 +287,7 @@ def create_result(request):
     ResultFormsetCreate = modelformset_factory(
         Result,
         form=ResultForm,
-        extra=8,  # Change as needed
+        extra=2,  # Change as needed
         can_delete=False
     )
 
@@ -381,36 +384,6 @@ def update_student(request, student_id):
     }
     return render(request, 'student_form.html', context)
 
-@csrf_exempt
-def update_payment(request, student_id):
-    student = get_object_or_404(Student, id=student_id)
-    payment = get_object_or_404(LastPayment, l_student=student)
-
-    if request.method == 'POST':
-        student_form = StudentForm(request.POST, instance=student)
-        payment_form = LastPaymentForm(request.POST, instance=payment)
-
-        if student_form.is_valid() and payment_form.is_valid():
-            student = student_form.save()
-            payment = payment_form.save(commit=False)
-            payment.l_student = student
-            payment.save()
-            return redirect('admitform') 
-        else:
-            print("Student Form Errors:", student_form.errors)
-            print("Payment Form Errors:", payment_form.errors)
-    else:
-    
-        student_form = StudentForm(instance=student)
-        payment_form = LastPaymentForm(instance=payment)
-
-    context = {
-        'student_form': student_form,
-        'payment_form': payment_form,
-        'update': True,  
-    }
-
-    return render(request, 'paymentform.html', context)
 
 @csrf_exempt
 def update_payment(request, pk):
@@ -422,7 +395,7 @@ def update_payment(request, pk):
         form = LastPaymentForm(request.POST, instance=payment)
         if form.is_valid():
             form.save()
-            return redirect('payment_list')  # সফলভাবে আপডেট হলে রিডাইরেক্ট করুন
+            return redirect('payment_list')  
     else:
         form = LastPaymentForm(instance=payment)
     return render(request, 'payment_form.html', {'form': form})
@@ -511,3 +484,6 @@ def delete_student_confirm(request, student_id):
         return redirect('alluser')  # Your URL name for student list page
 
     return render(request, 'delete_confirm.html', {'student': student})
+
+
+

@@ -137,7 +137,7 @@ tr:nth-child(odd) {
 </style>
 
 <div>
-  <h2 style="padding: 0px 20px;">Student Bill & Payment History</h2>
+  <h2 style="padding: 0px 20px;text-align: center;">Student Bill & Payment History</h2>
 
   <div class="message-box">
     Message :
@@ -304,6 +304,30 @@ tr:nth-child(odd) {
     }
   }
 </script>
+
+<script>
+function payBkash() {
+  const amount = document.getElementById('payAmount').value;
+  if (amount > 0) {
+    fetch(`/initiate-bkash-payment?amount=${amount}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.redirect_url) {
+          window.location.href = data.redirect_url; // Redirects to Bkash PIN screen
+        } else {
+          alert("Failed to create Bkash payment.");
+        }
+      })
+      .catch(err => {
+        alert("Error processing Bkash payment.");
+        console.error(err);
+      });
+  } else {
+    alert('Please enter a valid amount.');
+  }
+}
+</script>
+
 
 
 

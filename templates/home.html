@@ -25,7 +25,7 @@
       display: flex;
       align-items: center;
       padding: 45px;
-      background-color: #4A90E2;
+      background-color: #00C853;
       position: relative;
     }
 
@@ -163,7 +163,7 @@
     
 
     .footer {
-    background-color: #4A90E2;
+    background-color: #00C853;
     color: white;
     width: 100%;
     padding: 90px 50px; /* Increased top-bottom padding */
@@ -227,12 +227,12 @@
   </div>
 
   <div class="logo-title">
-    <h2 class="logo"><ion-icon name="school-sharp"></ion-icon> UniCam</h2>
+    <h2 class="logo"><ion-icon name="color-filter-outline"></ion-icon> Civic Complaint</h2>
   </div>
 
   <nav class="navigation">
     <a href="{% url 'home' %}" class="active">Home</a>
-    <a href="{% url 'alluser' %}">Admin</a>
+    <a href="{% url 'alluser' %}">Citizen Dashboard</a>
     <a href="{% url 'changepass' %}">Change Password</a>
     <a href="#footer-section">About</a>
     <a href="#footer-section">Contact</a>
@@ -242,16 +242,19 @@
 <!-- Slideshow Section -->
 <div class="slideshow-container">
   <div class="slide fade">
-    <img src="{% static 'about1.jpg' %}" alt="Image 1">
+    <img src="{% static 'bot1 (2).jpg' %}" alt="Image 1">
   </div>
   <div class="slide fade">
-    <img src="{% static 'about2.jpg' %}" alt="Image 2">
+    <img src="{% static 'bot2.jpg' %}" alt="Image 2">
   </div>
   <div class="slide fade">
-    <img src="{% static 'about3.jpg' %}" alt="Image 3">
+    <img src="{% static 'bot3.webp' %}" alt="Image 3">
   </div>
   <div class="slide fade">
-    <img src="{% static 'about4.jpg' %}" alt="Image 4">
+    <img src="{% static 'bot4.jpg' %}" alt="Image 4">
+  </div>
+  <div class="slide fade">
+    <img src="{% static 'poug.webp' %}" alt="Image 4">
   </div>
 </div>
 
@@ -261,6 +264,7 @@
   <span class="dot" onclick="currentSlide(1)"></span> 
   <span class="dot" onclick="currentSlide(2)"></span> 
   <span class="dot" onclick="currentSlide(3)"></span> 
+  <span class="dot" onclick="currentSlide(4)"></span>
   <span class="dot" onclick="currentSlide(4)"></span>
 </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <div style="text-align: center; margin-top: 40px;">
@@ -294,8 +298,7 @@
 <footer class="footer" id="footer-section">
   <div class="footer-section">
       <h3><span class="logo"></span>ABOUT</h3>
-      <p>UniCam is committed to providing quality education with a focus on innovation,<br> leadership, and community 
-        development.</p>
+      <p>Civic Complaint App delivers a high-quality online system for managing citizen complaints, tracking <br> issues,monitoring resolutions, and ensuring accountability.</p>
   </div>
   <div class="footer-section">
       <h3>CONTACT US</h3>
@@ -313,7 +316,7 @@
   </div>
 </footer>
 <div class="copyright">
-  <p>© Copyright 2025 | UniCam | All rights reserved.</p>
+  <p>© Copyright 2025 | Civic Complaint | All rights reserved.</p>
 </div>
 <script>
   // Add JavaScript if needed (e.g., interactivity)

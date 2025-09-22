@@ -229,7 +229,7 @@
           <th style="font-size: 14px;">Sl.NO.</th>
           <th style="font-size: 14px;text-align: center;">COURSE CODE</th>
           <th style="font-size: 14px;text-align: center;">COURSE TITLE</th>
-          <th style="font-size: 14px;">CR.HR</th>
+          <th style="font-size: 14px;text-align: center;">CR.HR</th>
           <th style="font-size: 14px;text-align: center;">EXAM. SCHEDULE</th>
         </tr>
       </thead>
@@ -237,7 +237,7 @@
         {% for register in registers %}
         <tr>
           <td style="font-size: 14px;">{{ forloop.counter }}</td>
-          <td style="font-size: 14px;">{{ register.code }}</td>
+          <td style="font-size: 14px;text-align: center;">{{ register.code }}</td>
           <td style="font-size: 14px;">{{ register.title }}</td>
           <td style="font-size: 14px;">{{ register.credits }}</td>
           <td style="font-size: 14px;"></td>
